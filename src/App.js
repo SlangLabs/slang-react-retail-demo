@@ -1,13 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Routes, Route } from "react-router-dom";
 import { CssBaseline, Container } from '@mui/material';
 import ThemeProvider from '@mui/material/styles/ThemeProvider';
 import ResponsiveAppBar from "./components/Navbar"
 import "./assets/App.css";
+import SearchBar from './components/SearchBar'
 import mainTheme from './Theme';
+import data from './data/data';
+import GroceryList from './components/GroceryList'
 
 const Home = () => {
-    return <div>Home</div>;
+    const [groceries, setGroceries] = useState(data);
+
+    return (
+        <React.Fragment>
+            <SearchBar/>
+            <GroceryList groceries={groceries}/>
+        </React.Fragment>
+    );
 }
 
 const Offers = () => {
