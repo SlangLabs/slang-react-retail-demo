@@ -38,8 +38,6 @@ const TemporaryDrawer = (props) => {
         </Box>
     );
 
-    console.log(props.open);
-
     return (
         <React.Fragment>
             <Drawer

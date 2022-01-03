@@ -3,9 +3,9 @@ import { FormControl, InputLabel, OutlinedInput, InputAdornment, IconButton } fr
 import SearchIcon from '@mui/icons-material/Search';
 import KeyboardVoiceIcon from '@mui/icons-material/KeyboardVoice';
 
-const SearchBar = () => {
+const SearchBar = (props) => {
     return (
-        <FormControl fullWidth sx={{ marginTop: 3, marginBottom: 3 }}>
+        <FormControl fullWidth sx={props.sx}>
             <InputLabel sx={{ fontSize: 20 }} htmlFor="outlined-adornment-amount">Search</InputLabel>
             <OutlinedInput
                 sx={{ fontSize: 20 }}

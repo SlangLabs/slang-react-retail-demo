@@ -4,29 +4,13 @@ import { CssBaseline, Container } from '@mui/material';
 import ThemeProvider from '@mui/material/styles/ThemeProvider';
 import ResponsiveAppBar from "./components/Navbar"
 import "./assets/App.css";
-import SearchBar from './components/SearchBar'
 import mainTheme from './Theme';
 import data from './data/data';
-import GroceryList from './components/GroceryList'
+import HomePage from './pages/HomePage'
+import OffersPage from './pages/OffersPage'
+import ItemPage from './pages/ItemPage'
+import OrderHistoryPage from './pages/OrderHistoryPage'
 
-const Home = () => {
-    const [groceries, setGroceries] = useState(data);
-
-    return (
-        <React.Fragment>
-            <SearchBar/>
-            <GroceryList groceries={groceries}/>
-        </React.Fragment>
-    );
-}
-
-const Offers = () => {
-    return <div>Offers</div>;
-}
-
-const OrderHistory = () => {
-    return <div>Order History</div>;
-}
 
 const App = () => {
     return (
@@ -36,9 +20,14 @@ const App = () => {
                 <ResponsiveAppBar/> 
                 <Container>
                     <Routes>
-                        <Route path="/" element={<Home/>}/>
-                        <Route path="/offers" element={<Offers/>}/>
-                        <Route path="/order-history" element={<OrderHistory/>}/>
+                        <Route path="/" element={<HomePage/>}/>
+                        <Route path="/offers" element={<OffersPage/>}/>
+                        <Route path="/order-history" element={<OrderHistoryPage/>}/>
+
+                        <Route path="item">
+                            <Route path=":itemnumber" element={<ItemPage/>} />
+                        </Route>
+
                     </Routes>
                 </Container>
             </ThemeProvider>

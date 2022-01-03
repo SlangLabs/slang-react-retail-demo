@@ -1,16 +1,19 @@
 import React from 'react';
-import { Grid } from '@mui/material';
+import { Box } from '@mui/material';
+import Masonry, { ResponsiveMasonry } from "react-responsive-masonry"
 import GroceryItem from './GroceryItem';
 
-const GroceryList = () => {
+const GroceryList = (props) => {
     return (
-        <Grid sx={{ marginBottom: 3 }} container spacing={{ xs: 2, md: 3 }}>
-            {Array.from(Array(6)).map((_, index) => (
-                <Grid item xs={12} sm={12} md={6} key={index}>
-                    <GroceryItem/>
-                </Grid>
-            ))}
-        </Grid>
+        <Box sx={{ marginBottom: 2 }}>
+            <ResponsiveMasonry columnsCountBreakPoints={{ 600: 1, 900: 2 }}>
+                <Masonry gutter="20px">
+                    {Array.from(props.groceries).map((value, index) => (
+                        <GroceryItem key={index} index={index} item={value} />
+                    ))}
+                </Masonry>
+            </ResponsiveMasonry>
+        </Box>
     )
 }
 
