@@ -33,7 +33,7 @@ const GroceryItem = (props) => {
                         <Typography sx={{ fontSize: { xs: 12, sm: 17 } }} color="text.secondary" component="div">
                             ₹{props.item.price}
                         </Typography>
-                        <Chip sx={{ fontSize: { xs: 10, sm: 12 }, marginTop: 0.5 }} label={`${props.item.size}kg`} size="small" />
+                        <Chip variant="outlined" sx={{ fontSize: { xs: 10, sm: 12 }, marginTop: 0.5 }} label={`${props.item.size}kg`} size="small" />
                         {'offer' in props.item
                             ? (<Typography sx={{ fontSize: { xs: 10, sm: 15 }, marginTop: 0.5 }} color="text.secondary" component="div">
                                 {props.item.offer}
