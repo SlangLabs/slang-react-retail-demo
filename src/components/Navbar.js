@@ -1,8 +1,10 @@
 import React from 'react';
-import { AppBar, Box, Toolbar, IconButton, Container, Button, List, ListItem, ListItemText, Drawer } from '@mui/material';
+import { AppBar, Box, Toolbar, IconButton, Container, Button, List, ListItem, ListItemText, Drawer, Badge } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import logo from '../assets/img/logo.png';
 import { Link } from "react-router-dom";
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+import logo from '../assets/img/logo.png';
+
 
 const pages = [
     {
@@ -62,7 +64,7 @@ const ResponsiveAppBar = () => {
 
 
     return (
-        <AppBar position="static">
+        <AppBar position="sticky">
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
                     <Box sx={{ height: '20px', mr: 2, display: { xs: 'none', md: 'flex' } }} component={Link} to="/">
@@ -97,6 +99,15 @@ const ResponsiveAppBar = () => {
                                 {page.name}
                             </Button>
                         ))}
+                    </Box>
+
+
+                    <Box>
+                        <Badge badgeContent={4} color="secondary" overlap="circular">
+                            <IconButton sx={{ color: 'white' }}>
+                                <ShoppingCartOutlinedIcon />
+                            </IconButton>
+                        </Badge>
                     </Box>
                 </Toolbar>
             </Container>

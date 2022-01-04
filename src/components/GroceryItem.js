@@ -48,7 +48,7 @@ const GroceryItem = (props) => {
                 ? <Button onClick={itemAdded} variant="contained">Add</Button>
                 : (<ButtonGroup size="small" variant="contained" aria-label="outlined primary button group">
                     <Button onClick={itemAdded} sx={{ fontSize: { xs: 10, sm: 12 }, maxWidth: { xs: '20px', sm: '30px' }, minWidth: '20px!important' }}><FontAwesomeIcon icon={faPlus} /></Button>
-                    <Button sx={{ fontSize: { xs: 12, sm: 15 }, maxWidth: { xs: '20px', sm: '30px' }, minWidth: '20px!important' }} disabled>{cart}</Button>
+                    <Button sx={{ fontSize: { xs: 12, sm: 15 }, maxWidth: { xs: '20px', sm: '30px' }, minWidth: '20px!important', color: 'primary.main!important' }} disabled>{cart}</Button>
                     <Button onClick={itemRemoved} sx={{ fontSize: { xs: 10, sm: 12 }, maxWidth: { xs: '20px', sm: '30px' }, minWidth: '20px!important' }}><FontAwesomeIcon icon={faMinus} /></Button>
                 </ButtonGroup>)
             }

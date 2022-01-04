@@ -24,7 +24,7 @@ const ItemPage = () => {
     let itemNumber = params.itemnumber;
 
     // If the provided item number is not actually a number or the item number is too large (or too small)
-    if (!/^\d+$/.test(itemNumber) || Number(itemNumber) >= data.length || Number(itemNumber) === 0) {
+    if (!/^\d+$/.test(itemNumber) || Number(itemNumber) > data.length || Number(itemNumber) === 0) {
         return 'Invalid item number'
     }
 
@@ -33,14 +33,18 @@ const ItemPage = () => {
     const item = data[itemNumber];
 
     return (
-        <Grid sx={{ marginTop: 1 }} container spacing={2}>
+        <Grid sx={{ marginTop: 1, marginBottom: 2 }} container spacing={2}>
             <Grid item xs={12} sm={8}>
                 <Typography variant="h3">{item.name}</Typography>
+                {'offer' in item
+                    ? <Typography color="text.secondary" variant="subtitle1">{item.offer}</Typography>
+                    : null
+                }
                 {cart === 0
                     ? <Button size="large" sx={{ marginTop: 2 }} onClick={itemAdded} variant="contained">Add</Button>
                     : (<ButtonGroup sx={{ marginTop: 2 }} size="large" variant="contained" aria-label="outlined primary button group">
                         <Button onClick={itemAdded} sx={{ maxWidth: { xs: '20px', sm: '30px' }, minWidth: '20px!important' }}><FontAwesomeIcon icon={faPlus} /></Button>
-                        <Button sx={{ maxWidth: { xs: '20px', sm: '30px' }, minWidth: '20px!important' }} disabled>{cart}</Button>
+                        <Button sx={{ fontSize: { xs: 15, md: 17 }, maxWidth: { xs: '20px', sm: '30px' }, minWidth: '20px!important', color: 'green!important' }} disabled>{cart}</Button>
                         <Button onClick={itemRemoved} sx={{ maxWidth: { xs: '20px', sm: '30px' }, minWidth: '20px!important' }}><FontAwesomeIcon icon={faMinus} /></Button>
                     </ButtonGroup>)
                 }
