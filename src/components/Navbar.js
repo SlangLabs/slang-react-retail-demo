@@ -104,7 +104,7 @@ const ResponsiveAppBar = () => {
 
                     <Box>
                         <Badge badgeContent={4} color="secondary" overlap="circular">
-                            <IconButton sx={{ color: 'white' }}>
+                            <IconButton component={Link} to="/cart" sx={{ color: 'white' }}>
                                 <ShoppingCartOutlinedIcon />
                             </IconButton>
                         </Badge>

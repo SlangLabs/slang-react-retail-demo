@@ -10,6 +10,7 @@ import OffersPage from './pages/OffersPage'
 import ItemPage from './pages/ItemPage'
 import OrderHistoryPage from './pages/OrderHistoryPage'
 import OrderPage from './pages/OrderPage'
+import CartPage from './pages/CartPage'
 import ScrollToTop from './Utils'
 
 
@@ -25,6 +26,7 @@ const App = () => {
                         <Route path="/" element={<HomePage/>}/>
                         <Route path="/offers" element={<OffersPage/>}/>
                         <Route path="/order-history" element={<OrderHistoryPage/>}/>
+                        <Route path="/cart" element={<CartPage/>}/>
 
                         <Route path="item">
                             <Route path=":itemnumber" element={<ItemPage/>} />
