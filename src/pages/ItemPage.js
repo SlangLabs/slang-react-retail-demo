@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Grid, Typography, Chip, Paper, Box, Button, ButtonGroup } from '@mui/material';
 import { useParams, useNavigate } from "react-router-dom";
+import { useTheme } from '@mui/material/styles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons'
 import data from '../data/data'
@@ -10,6 +11,7 @@ import fruitsVeggiesImage from '../assets/img/fruits-veggies.jpg'
 const ItemPage = () => {
     const params = useParams();
     const navigate = useNavigate();
+    const theme = useTheme();
     const [cart, changeCart] = useState(0);
 
     const itemAdded = () => {
@@ -44,7 +46,7 @@ const ItemPage = () => {
                     ? <Button size="large" sx={{ marginTop: 2 }} onClick={itemAdded} variant="contained">Add</Button>
                     : (<ButtonGroup sx={{ marginTop: 2 }} size="large" variant="contained" aria-label="outlined primary button group">
                         <Button onClick={itemAdded} sx={{ maxWidth: { xs: '20px', sm: '30px' }, minWidth: '20px!important' }}><FontAwesomeIcon icon={faPlus} /></Button>
-                        <Button sx={{ fontSize: { xs: 15, md: 17 }, maxWidth: { xs: '20px', sm: '30px' }, minWidth: '20px!important', color: 'green!important' }} disabled>{cart}</Button>
+                        <Button sx={{ fontSize: { xs: 15, md: 17 }, maxWidth: { xs: '20px', sm: '30px' }, minWidth: '20px!important', color: theme.palette.primary.main + '!important' }} disabled>{cart}</Button>
                         <Button onClick={itemRemoved} sx={{ maxWidth: { xs: '20px', sm: '30px' }, minWidth: '20px!important' }}><FontAwesomeIcon icon={faMinus} /></Button>
                     </ButtonGroup>)
                 }
