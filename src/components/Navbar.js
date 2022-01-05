@@ -1,6 +1,10 @@
 import React from 'react';
-import { AppBar, Box, Toolbar, IconButton, Container, Button, List, ListItem, ListItemText, Drawer, Badge } from '@mui/material';
+import { AppBar, Box, Toolbar, IconButton, Container, Button, List, ListItem, ListItemText, Drawer, Badge, Switch, FormControlLabel } from '@mui/material';
+import DarkModeIcon from '@mui/icons-material/DarkMode';
+import WbSunnyIcon from '@mui/icons-material/WbSunny';
 import MenuIcon from '@mui/icons-material/Menu';
+import { useSelector, useDispatch } from 'react-redux'
+import { dark, light } from '../slices/themeSlice'
 import { Link } from "react-router-dom";
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import logo from '../assets/img/logo.png';
@@ -21,14 +25,20 @@ const pages = [
     },
 ]
 
+
 const TemporaryDrawer = (props) => {
+    const themeVal = useSelector((state) => state.theme.value)
+    const dispatch = useDispatch()
+
+    const themeChanged = (event) => {
+        if (event.target.checked) dispatch(dark());
+        else dispatch(light());
+    }
 
     const list = () => (
         <Box
             sx={{ width: 250 }}
             role="presentation"
-            onClick={props.closed}
-            onKeyDown={props.closed}
         >
             <List>
                 {pages.map((page) => (
@@ -36,6 +46,11 @@ const TemporaryDrawer = (props) => {
                         <ListItemText primary={page.name} />
                     </ListItem>
                 ))}
+                <ListItem>
+                    <WbSunnyIcon />
+                    <Switch onChange={themeChanged} checked={themeVal === 'dark' ? true : false} />
+                    <DarkModeIcon />
+                </ListItem>
             </List>
         </Box>
     );
@@ -47,6 +62,7 @@ const TemporaryDrawer = (props) => {
                 onClose={props.closed}
             >
                 {list()}
+
             </Drawer>
         </React.Fragment>
     );
@@ -55,6 +71,9 @@ const TemporaryDrawer = (props) => {
 const ResponsiveAppBar = () => {
     const [anchorElNav, setAnchorElNav] = React.useState(false);
 
+    const themeVal = useSelector((state) => state.theme.value)
+    const dispatch = useDispatch()
+
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(true);
     };
@@ -62,6 +81,10 @@ const ResponsiveAppBar = () => {
         setAnchorElNav(false);
     };
 
+    const themeChanged = (event) => {
+        if (event.target.checked) dispatch(dark());
+        else dispatch(light());
+    }
 
     return (
         <AppBar position="sticky">
@@ -100,6 +123,13 @@ const ResponsiveAppBar = () => {
                             </Button>
                         ))}
                     </Box>
+
+                    <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+                        <WbSunnyIcon sx={{ height: 'auto' }} />
+                        <Switch onChange={themeChanged} checked={themeVal === 'dark' ? true : false} />
+                        <DarkModeIcon sx={{ marginRight: 2, height: 'auto' }} />
+                    </Box>
+
 
 
                     <Box>

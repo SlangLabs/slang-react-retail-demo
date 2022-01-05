@@ -1,6 +1,4 @@
-import { createTheme } from '@mui/material/styles';
-
-const getPalette = (mode) => ({
+const palette = (mode) => ({
     palette: {
         mode,
         ...(mode === 'light'
@@ -21,11 +19,14 @@ const getPalette = (mode) => ({
                     main: '#149a7a',
                     contrastText: '#fff',
                 },
+                secondary: {
+                    main: '#f8d464',
+                    contrastText: '#424242',
+                }
             }),
     },
 });
 
 
-const theme = createTheme(getPalette('light'))
 
-export default theme;
+export default palette;

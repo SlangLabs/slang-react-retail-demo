@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Routes, Route } from "react-router-dom";
 import { CssBaseline, Container } from '@mui/material';
 import ThemeProvider from '@mui/material/styles/ThemeProvider';
+import { createTheme } from '@mui/material/styles';
+import { useSelector, useDispatch } from 'react-redux'
+import { light, dark } from './slices/themeSlice'
 import ResponsiveAppBar from "./components/Navbar"
 import "./assets/App.css";
-import mainTheme from './Theme';
+import palette from './Theme';
 import HomePage from './pages/HomePage'
 import OffersPage from './pages/OffersPage'
 import ItemPage from './pages/ItemPage'
@@ -15,12 +18,24 @@ import ScrollToTop from './Utils'
 
 
 const App = () => {
+    const themeVal = useSelector((state) => state.theme.value)
+    const dispatch = useDispatch()
+
+    const themeFromLS = localStorage.getItem('theme');
+
+    if (themeFromLS !== undefined) {
+        if (themeFromLS === 'light') dispatch(light());
+        else dispatch(dark());
+    }
+
+    const theme = createTheme(palette(themeVal));
+
     return (
         <React.StrictMode>
             <ScrollToTop/>
-            <ThemeProvider theme={mainTheme}>
+            <ThemeProvider theme={theme}>
             <CssBaseline />
-                <ResponsiveAppBar/> 
+                <ResponsiveAppBar /> 
                 <Container>
                     <Routes>
                         <Route path="/" element={<HomePage/>}/>
