@@ -14,19 +14,12 @@ import ItemPage from './pages/ItemPage'
 import OrderHistoryPage from './pages/OrderHistoryPage'
 import OrderPage from './pages/OrderPage'
 import CartPage from './pages/CartPage'
-import ScrollToTop from './Utils'
+import { ScrollToTop } from './Utils'
 
 
 const App = () => {
     const themeVal = useSelector((state) => state.theme.value)
     const dispatch = useDispatch()
-
-    const themeFromLS = localStorage.getItem('theme');
-
-    if (themeFromLS !== undefined) {
-        if (themeFromLS === 'light') dispatch(light());
-        else dispatch(dark());
-    }
 
     const theme = createTheme(palette(themeVal));
 
@@ -44,7 +37,7 @@ const App = () => {
                         <Route path="/cart" element={<CartPage/>}/>
 
                         <Route path="item">
-                            <Route path=":itemnumber" element={<ItemPage/>} />
+                            <Route path=":itemKey" element={<ItemPage/>} />
                         </Route>
 
                         <Route path="order">

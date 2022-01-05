@@ -4,6 +4,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useTheme } from '@mui/material/styles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons'
+import { useSelector, useDispatch } from 'react-redux'
+import { addOne, removeOne } from '../slices/cartSlice'
 import data from '../data/data'
 import fruitsVeggiesImage from '../assets/img/fruits-veggies.jpg'
 
@@ -12,27 +14,35 @@ const ItemPage = () => {
     const params = useParams();
     const navigate = useNavigate();
     const theme = useTheme();
-    const [cart, changeCart] = useState(0);
+
+    let itemKey = params.itemKey;
+
+    const isInvalid = !data.hasOwnProperty(itemKey);
+
+    // We are forced to do this since hooks cannot be called conditionally
+    const amount = useSelector((state) => {
+        if (isInvalid) return null;
+        return state.cart.items[itemKey]
+    })
+
+    const dispatch = useDispatch()
 
     const itemAdded = () => {
-        changeCart(cart + 1);
+        dispatch(addOne(itemKey));
     }
 
     const itemRemoved = () => {
-        changeCart(cart - 1);
+        dispatch(removeOne(itemKey));
     }
 
-
-    let itemNumber = params.itemnumber;
-
     // If the provided item number is not actually a number or the item number is too large (or too small)
-    if (!/^\d+$/.test(itemNumber) || Number(itemNumber) > data.length || Number(itemNumber) === 0) {
+    if (isInvalid) {
         return 'Invalid item number'
     }
 
-    // Since we are one-indexing the URL item
-    itemNumber = Number(itemNumber) - 1;
-    const item = data[itemNumber];
+    console.log(amount)
+
+    const item = data[itemKey];
 
     return (
         <Grid sx={{ marginTop: 1, marginBottom: 2 }} container spacing={2}>
@@ -42,11 +52,11 @@ const ItemPage = () => {
                     ? <Typography color="text.secondary" variant="subtitle1">{item.offer}</Typography>
                     : null
                 }
-                {cart === 0
+                {amount === 0 || amount === undefined
                     ? <Button size="large" sx={{ marginTop: 2 }} onClick={itemAdded} variant="contained">Add</Button>
                     : (<ButtonGroup sx={{ marginTop: 2 }} size="large" variant="contained" aria-label="outlined primary button group">
                         <Button onClick={itemAdded} sx={{ maxWidth: { xs: '20px', sm: '30px' }, minWidth: '20px!important' }}><FontAwesomeIcon icon={faPlus} /></Button>
-                        <Button sx={{ fontSize: { xs: 15, md: 17 }, maxWidth: { xs: '20px', sm: '30px' }, minWidth: '20px!important', color: theme.palette.primary.main + '!important' }} disabled>{cart}</Button>
+                        <Button sx={{ fontSize: { xs: 15, md: 17 }, maxWidth: { xs: '20px', sm: '30px' }, minWidth: '20px!important', color: theme.palette.primary.main + '!important' }} disabled>{amount}</Button>
                         <Button onClick={itemRemoved} sx={{ maxWidth: { xs: '20px', sm: '30px' }, minWidth: '20px!important' }}><FontAwesomeIcon icon={faMinus} /></Button>
                     </ButtonGroup>)
                 }

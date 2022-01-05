@@ -4,6 +4,7 @@ import DarkModeIcon from '@mui/icons-material/DarkMode';
 import WbSunnyIcon from '@mui/icons-material/WbSunny';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useSelector, useDispatch } from 'react-redux'
+import { addOne, removeOne } from '../slices/cartSlice'
 import { dark, light } from '../slices/themeSlice'
 import { Link } from "react-router-dom";
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
@@ -42,7 +43,7 @@ const TemporaryDrawer = (props) => {
         >
             <List>
                 {pages.map((page) => (
-                    <ListItem component={Link} to={page.link} button key={page.name}>
+                    <ListItem onClick={props.closed} component={Link} to={page.link} button key={page.name}>
                         <ListItemText primary={page.name} />
                     </ListItem>
                 ))}
@@ -73,6 +74,8 @@ const ResponsiveAppBar = () => {
 
     const themeVal = useSelector((state) => state.theme.value)
     const dispatch = useDispatch()
+
+    const amountInCart = useSelector((state) => Object.keys(state.cart.items).length)
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(true);
@@ -131,14 +134,16 @@ const ResponsiveAppBar = () => {
                     </Box>
 
 
-
-                    <Box>
-                        <Badge badgeContent={4} color="secondary" overlap="circular">
-                            <IconButton component={Link} to="/cart" sx={{ color: 'white' }}>
-                                <ShoppingCartOutlinedIcon />
-                            </IconButton>
-                        </Badge>
-                    </Box>
+                    {amountInCart > 0
+                        ? <Box>
+                            <Badge badgeContent={amountInCart} color="secondary" overlap="circular">
+                                <IconButton component={Link} to="/cart" sx={{ color: 'white' }}>
+                                    <ShoppingCartOutlinedIcon />
+                                </IconButton>
+                            </Badge>
+                        </Box>
+                        : null
+                    }
                 </Toolbar>
             </Container>
         </AppBar>

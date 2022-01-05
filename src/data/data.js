@@ -1,5 +1,5 @@
-const data = [
-    {
+const data = {
+    'qNPTUJ': {
         name: 'Banana Stem - Organic',
         size: 1, // Size is in kilograms
         price: 66.9, // Price is in Indian rupees
@@ -9,7 +9,7 @@ const data = [
         Viverra vitae congue eu consequat ac felis donec. Dolor sit amet consectetur adipiscing elit duis tristique sollicitudin. In metus vulputate eu scelerisque felis imperdiet proin fermentum leo. Morbi tincidunt augue interdum velit euismod in pellentesque. Amet nisl suscipit adipiscing bibendum est ultricies integer. Tellus rutrum tellus pellentesque eu. Sit amet nulla facilisi morbi tempus iaculis urna. Scelerisque purus semper eget duis at tellus at urna. Egestas fringilla phasellus faucibus scelerisque eleifend. Ut morbi tincidunt augue interdum velit. Nibh sed pulvinar proin gravida. Nisi est sit amet facilisis magna. Quam nulla porttitor massa id neque aliquam vestibulum morbi blandit.
         `
     },
-    {
+    'AIrb3N': {
         name: 'Green Beans - Organic',
         size: 5, // Size is in kilograms
         price: 66.9, // Price is in Indian rupees
@@ -19,7 +19,7 @@ const data = [
         Viverra vitae congue eu consequat ac felis donec. Dolor sit amet consectetur adipiscing elit duis tristique sollicitudin. In metus vulputate eu scelerisque felis imperdiet proin fermentum leo. Morbi tincidunt augue interdum velit euismod in pellentesque. Amet nisl suscipit adipiscing bibendum est ultricies integer. Tellus rutrum tellus pellentesque eu. Sit amet nulla facilisi morbi tempus iaculis urna. Scelerisque purus semper eget duis at tellus at urna. Egestas fringilla phasellus faucibus scelerisque eleifend. Ut morbi tincidunt augue interdum velit. Nibh sed pulvinar proin gravida. Nisi est sit amet facilisis magna. Quam nulla porttitor massa id neque aliquam vestibulum morbi blandit.
         `
     },
-    {
+    'zzmyNw': {
         name: 'Apple - Red Delicious - Premium',
         size: 1, // Size is in kilograms
         price: 23.9, // Price is in Indian rupees
@@ -29,7 +29,7 @@ const data = [
         Viverra vitae congue eu consequat ac felis donec. Dolor sit amet consectetur adipiscing elit duis tristique sollicitudin. In metus vulputate eu scelerisque felis imperdiet proin fermentum leo. Morbi tincidunt augue interdum velit euismod in pellentesque. Amet nisl suscipit adipiscing bibendum est ultricies integer. Tellus rutrum tellus pellentesque eu. Sit amet nulla facilisi morbi tempus iaculis urna. Scelerisque purus semper eget duis at tellus at urna. Egestas fringilla phasellus faucibus scelerisque eleifend. Ut morbi tincidunt augue interdum velit. Nibh sed pulvinar proin gravida. Nisi est sit amet facilisis magna. Quam nulla porttitor massa id neque aliquam vestibulum morbi blandit.
         `
     },
-    {
+    'f3dZPN': {
         name: 'Apricot - Premium',
         size: 1, // Size is in kilograms
         price: 25.3, // Price is in Indian rupees
@@ -39,7 +39,7 @@ const data = [
         Viverra vitae congue eu consequat ac felis donec. Dolor sit amet consectetur adipiscing elit duis tristique sollicitudin. In metus vulputate eu scelerisque felis imperdiet proin fermentum leo. Morbi tincidunt augue interdum velit euismod in pellentesque. Amet nisl suscipit adipiscing bibendum est ultricies integer. Tellus rutrum tellus pellentesque eu. Sit amet nulla facilisi morbi tempus iaculis urna. Scelerisque purus semper eget duis at tellus at urna. Egestas fringilla phasellus faucibus scelerisque eleifend. Ut morbi tincidunt augue interdum velit. Nibh sed pulvinar proin gravida. Nisi est sit amet facilisis magna. Quam nulla porttitor massa id neque aliquam vestibulum morbi blandit.
         `
     },
-    {
+    'ifQkKr': {
         name: 'Beetroot - Julienne',
         size: 1, // Size is in kilograms
         price: 103.3, // Price is in Indian rupees
@@ -48,7 +48,7 @@ const data = [
         Viverra vitae congue eu consequat ac felis donec. Dolor sit amet consectetur adipiscing elit duis tristique sollicitudin. In metus vulputate eu scelerisque felis imperdiet proin fermentum leo. Morbi tincidunt augue interdum velit euismod in pellentesque. Amet nisl suscipit adipiscing bibendum est ultricies integer. Tellus rutrum tellus pellentesque eu. Sit amet nulla facilisi morbi tempus iaculis urna. Scelerisque purus semper eget duis at tellus at urna. Egestas fringilla phasellus faucibus scelerisque eleifend. Ut morbi tincidunt augue interdum velit. Nibh sed pulvinar proin gravida. Nisi est sit amet facilisis magna. Quam nulla porttitor massa id neque aliquam vestibulum morbi blandit.
         `
     },
-    {
+    'VOILNm': {
         name: 'Apple - Queenrose - Premium',
         size: 1, // Size is in kilograms
         price: 333.9, // Price is in Indian rupees
@@ -58,7 +58,7 @@ const data = [
         Viverra vitae congue eu consequat ac felis donec. Dolor sit amet consectetur adipiscing elit duis tristique sollicitudin. In metus vulputate eu scelerisque felis imperdiet proin fermentum leo. Morbi tincidunt augue interdum velit euismod in pellentesque. Amet nisl suscipit adipiscing bibendum est ultricies integer. Tellus rutrum tellus pellentesque eu. Sit amet nulla facilisi morbi tempus iaculis urna. Scelerisque purus semper eget duis at tellus at urna. Egestas fringilla phasellus faucibus scelerisque eleifend. Ut morbi tincidunt augue interdum velit. Nibh sed pulvinar proin gravida. Nisi est sit amet facilisis magna. Quam nulla porttitor massa id neque aliquam vestibulum morbi blandit.
         `
     },
-    {
+    'Ov8AxD': {
         name: 'Brinjal - Organic',
         size: 1, // Size is in kilograms
         price: 223.9, // Price is in Indian rupees
@@ -68,6 +68,6 @@ const data = [
         Viverra vitae congue eu consequat ac felis donec. Dolor sit amet consectetur adipiscing elit duis tristique sollicitudin. In metus vulputate eu scelerisque felis imperdiet proin fermentum leo. Morbi tincidunt augue interdum velit euismod in pellentesque. Amet nisl suscipit adipiscing bibendum est ultricies integer. Tellus rutrum tellus pellentesque eu. Sit amet nulla facilisi morbi tempus iaculis urna. Scelerisque purus semper eget duis at tellus at urna. Egestas fringilla phasellus faucibus scelerisque eleifend. Ut morbi tincidunt augue interdum velit. Nibh sed pulvinar proin gravida. Nisi est sit amet facilisis magna. Quam nulla porttitor massa id neque aliquam vestibulum morbi blandit.
         `
     },
-]
+}
 
 export default data;

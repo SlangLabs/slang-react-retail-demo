@@ -3,10 +3,12 @@ import { Typography } from '@mui/material';
 import SearchBar from '../components/SearchBar'
 import GroceryList from '../components/GroceryList'
 import data from '../data/data'
+import { objectFilter } from '../Utils'
+
 
 
 const OffersPage = () => {
-    const [groceries, setGroceries] = useState(data.filter((item) => { return 'offer' in item }));
+    const [groceries, setGroceries] = useState(objectFilter(data, (item) => { return item.hasOwnProperty('offer') }));
 
     return (
         <React.Fragment>
