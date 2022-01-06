@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Grid, Typography, Chip, Paper, Box, Button, ButtonGroup } from '@mui/material';
+import React from 'react';
+import { Grid, Typography, Chip, Box, Button, ButtonGroup } from '@mui/material';
 import { useParams, useNavigate } from "react-router-dom";
 import { useTheme } from '@mui/material/styles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -10,6 +10,7 @@ import data from '../data/data'
 import fruitsVeggiesImage from '../assets/img/fruits-veggies.jpg'
 
 
+// The page for a specific item
 const ItemPage = () => {
     const params = useParams();
     const navigate = useNavigate();
@@ -17,6 +18,7 @@ const ItemPage = () => {
 
     let itemKey = params.itemKey;
 
+    // Determine if the item key (provided in the params) is invalid
     const isInvalid = !data.hasOwnProperty(itemKey);
 
     // We are forced to do this since hooks cannot be called conditionally
@@ -27,19 +29,12 @@ const ItemPage = () => {
 
     const dispatch = useDispatch()
 
-    const itemAdded = () => {
-        dispatch(addOne(itemKey));
-    }
-
-    const itemRemoved = () => {
-        dispatch(removeOne(itemKey));
-    }
-
-    // If the provided item number is not actually a number or the item number is too large (or too small)
+    // If the key is not part of any item, go to 404 page
     if (isInvalid) {
         return 'Invalid item number'
     }
 
+    // Get the item's attributes
     const item = data[itemKey];
 
     return (
@@ -50,12 +45,13 @@ const ItemPage = () => {
                     ? <Typography color="text.secondary" variant="subtitle1">{item.offer}</Typography>
                     : null
                 }
+                {/* If there is a nonzero number of the current item, show the plus and minus buttons, otherwise, show the add button */}
                 {amount === 0 || amount === undefined
-                    ? <Button size="large" sx={{ marginTop: 2 }} onClick={itemAdded} variant="contained">Add</Button>
+                    ? <Button size="large" sx={{ marginTop: 2 }} onClick={() => dispatch(addOne(itemKey))} variant="contained">Add</Button>
                     : (<ButtonGroup sx={{ marginTop: 2 }} size="large" variant="contained" aria-label="outlined primary button group">
-                        <Button onClick={itemAdded} sx={{ maxWidth: { xs: '20px', sm: '30px' }, minWidth: '20px!important' }}><FontAwesomeIcon icon={faPlus} /></Button>
+                        <Button onClick={() => dispatch(addOne(itemKey))} sx={{ maxWidth: { xs: '20px', sm: '30px' }, minWidth: '20px!important' }}><FontAwesomeIcon icon={faPlus} /></Button>
                         <Button sx={{ fontSize: { xs: 15, md: 17 }, maxWidth: { xs: '20px', sm: '30px' }, minWidth: '20px!important', color: theme.palette.primary.main + '!important' }} disabled>{amount}</Button>
-                        <Button onClick={itemRemoved} sx={{ maxWidth: { xs: '20px', sm: '30px' }, minWidth: '20px!important' }}><FontAwesomeIcon icon={faMinus} /></Button>
+                        <Button onClick={() => dispatch(removeOne(itemKey))} sx={{ maxWidth: { xs: '20px', sm: '30px' }, minWidth: '20px!important' }}><FontAwesomeIcon icon={faMinus} /></Button>
                     </ButtonGroup>)
                 }
 
@@ -70,7 +66,6 @@ const ItemPage = () => {
                     alt={`${item.name}`}
                     src={fruitsVeggiesImage}
                 />
-
             </Grid>
         </Grid>
     );

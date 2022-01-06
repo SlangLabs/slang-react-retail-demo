@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Box, Card, CardActionArea, CardContent, Typography, Chip } from '@mui/material';
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry"
 import { Link } from "react-router-dom";
 import data from '../data/data';
 import { formatDate } from '../Utils'
 
 
+// A previous order's component
 const OrderHistoryItem = (props) => {
     let price = 0;
 
@@ -16,38 +17,42 @@ const OrderHistoryItem = (props) => {
 
     price = price.toFixed(2);
 
+    // Get the date that the order was made and parse it (date is provided as UNIX milliseconds)
     const date = new Date(props.order.date)
 
+    // Format the date according to our standards
     const formattedDate = formatDate(date);
 
-    return <Card>
-        <CardActionArea sx={{ display: 'flex' }} component={Link} to={`/order/${props.orderKey}`}>
-            <Box sx={{ flex: '2 1 0', display: 'flex', flexDirection: 'column', alignSelf: 'center' }}>
-                <CardContent>
-                    <Typography sx={{ fontSize: { xs: 13, sm: 18 } }} component="div" variant="h5">
-                        {formattedDate}
-                    </Typography>
-                    <Typography sx={{ fontSize: { xs: 12, sm: 17 } }} color="text.secondary" component="div">
-                        {Object.keys(props.order.items).length} item(s)
-                    </Typography>
-                    <Chip color={props.order.cancelled ? 'error' : 'success'} variant="outlined" sx={{ fontSize: { xs: 10, sm: 12 }, marginTop: 0.5 }} label={props.order.cancelled ? 'Cancelled' : 'Active'} size="small" />
-                </CardContent>
-            </Box>
+    return (
+        <Card>
+            <CardActionArea sx={{ display: 'flex' }} component={Link} to={`/order/${props.orderKey}`}>
+                <Box sx={{ flex: '2 1 0', display: 'flex', flexDirection: 'column', alignSelf: 'center' }}>
+                    <CardContent>
+                        <Typography sx={{ fontSize: { xs: 13, sm: 18 } }} component="div" variant="h5">
+                            {formattedDate}
+                        </Typography>
+                        <Typography sx={{ fontSize: { xs: 12, sm: 17 } }} color="text.secondary" component="div">
+                            {Object.keys(props.order.items).length} item(s)
+                        </Typography>
+                        <Chip color={props.order.cancelled ? 'error' : 'success'} variant="outlined" sx={{ fontSize: { xs: 10, sm: 12 }, marginTop: 0.5 }} label={props.order.cancelled ? 'Cancelled' : 'Active'} size="small" />
+                    </CardContent>
+                </Box>
 
-            <Box sx={{ flex: '1 1 0', display: 'flex', alignSelf: 'center', justifyContent: 'center' }}>
-                <Typography color="text.secondary" sx={{ fontSize: { xs: 12, sm: 17 } }} component="div">
-                    ₹{price}
-                </Typography>
-            </Box>
-        </CardActionArea>
-    </Card>
+                <Box sx={{ flex: '1 1 0', display: 'flex', alignSelf: 'center', justifyContent: 'center' }}>
+                    <Typography color="text.secondary" sx={{ fontSize: { xs: 12, sm: 17 } }} component="div">
+                        ₹{price}
+                    </Typography>
+                </Box>
+            </CardActionArea>
+        </Card>
+    );
 }
 
 
+// The order history page component
 const OrderHistoryPage = () => {
+    // Get all of the orders from Redux
     const orders = useSelector((state) => state.orderHistory.orders)
-
-    const dispatch = useDispatch();
 
     // Show the most recent orders first
     const sortedOrdersKeys = Object.keys(orders);
@@ -59,6 +64,7 @@ const OrderHistoryPage = () => {
                 Order History
             </Typography>
 
+            {/* Show all of the orders if they exist, otherwise tell the users they have not made any orders */}
             {sortedOrdersKeys.length > 0
                 ? (<ResponsiveMasonry columnsCountBreakPoints={{ 300: 1, 600: 2, 900: 3 }}>
                     <Masonry gutter="20px">
@@ -69,7 +75,6 @@ const OrderHistoryPage = () => {
                 </ResponsiveMasonry>)
                 : <Typography sx={{ marginTop: 2 }} variant="h6" color="text.secondary">You have not made any orders.</Typography>
             }
-
         </Box>
     );
 }

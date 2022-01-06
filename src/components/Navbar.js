@@ -1,16 +1,15 @@
 import React from 'react';
-import { AppBar, Box, Toolbar, IconButton, Container, Button, List, ListItem, ListItemText, Drawer, Badge, Switch, FormControlLabel } from '@mui/material';
+import { AppBar, Box, Toolbar, IconButton, Container, Button, List, ListItem, ListItemText, Drawer, Badge, Switch } from '@mui/material';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import WbSunnyIcon from '@mui/icons-material/WbSunny';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useSelector, useDispatch } from 'react-redux'
-import { addOne, removeOne } from '../slices/cartSlice'
 import { dark, light } from '../slices/themeSlice'
 import { Link } from "react-router-dom";
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import logo from '../assets/img/logo.png';
 
-
+// List all of the pages that the navbar and drawer must show
 const pages = [
     {
         name: 'Home',
@@ -26,21 +25,33 @@ const pages = [
     },
 ]
 
-
-const TemporaryDrawer = (props) => {
+// The theme toggle switch
+const ThemeToggle = (props) => {
     const themeVal = useSelector((state) => state.theme.value)
     const dispatch = useDispatch()
 
+    // If the theme is changed, dispatch the respective theme changed event
     const themeChanged = (event) => {
         if (event.target.checked) dispatch(dark());
         else dispatch(light());
     }
 
+    return (
+        <React.Fragment>
+            <WbSunnyIcon sx={{ height: 'auto' }} />
+            <Switch onChange={themeChanged} checked={themeVal === 'dark' ? true : false} />
+            <DarkModeIcon sx={{ height: 'auto' }} />
+        </React.Fragment>
+    );
+}
+
+
+// The navigation drawer that is shown on smaller screen sizes
+const TemporaryDrawer = (props) => {
+
+    // Get a list of navigation list items
     const list = () => (
-        <Box
-            sx={{ width: 250 }}
-            role="presentation"
-        >
+        <Box sx={{ width: 250 }} role="presentation">
             <List>
                 {pages.map((page) => (
                     <ListItem onClick={props.closed} component={Link} to={page.link} button key={page.name}>
@@ -48,9 +59,7 @@ const TemporaryDrawer = (props) => {
                     </ListItem>
                 ))}
                 <ListItem>
-                    <WbSunnyIcon />
-                    <Switch onChange={themeChanged} checked={themeVal === 'dark' ? true : false} />
-                    <DarkModeIcon />
+                    <ThemeToggle/>
                 </ListItem>
             </List>
         </Box>
@@ -58,36 +67,27 @@ const TemporaryDrawer = (props) => {
 
     return (
         <React.Fragment>
-            <Drawer
-                open={props.open}
-                onClose={props.closed}
-            >
+            <Drawer open={props.open} onClose={props.closed}>
                 {list()}
-
             </Drawer>
         </React.Fragment>
     );
 }
 
+
 const ResponsiveAppBar = () => {
-    const [anchorElNav, setAnchorElNav] = React.useState(false);
+    const [drawerOpen, setDrawer] = React.useState(false);
 
-    const themeVal = useSelector((state) => state.theme.value)
-    const dispatch = useDispatch()
-
+    // Get the amount of items in the cart
     const amountInCart = useSelector((state) => Object.keys(state.cart.items).length)
 
-    const handleOpenNavMenu = (event) => {
-        setAnchorElNav(true);
+    // Handle close and open drawer events
+    const handleOpenDrawer = (event) => {
+        setDrawer(true);
     };
-    const handleCloseNavMenu = () => {
-        setAnchorElNav(false);
+    const handleCloseDrawer = () => {
+        setDrawer(false);
     };
-
-    const themeChanged = (event) => {
-        if (event.target.checked) dispatch(dark());
-        else dispatch(light());
-    }
 
     return (
         <AppBar position="sticky">
@@ -97,28 +97,31 @@ const ResponsiveAppBar = () => {
                         <img alt="Slang Labs logo" style={{ height: '20px' }} src={logo} />
                     </Box>
 
-
+                    {/* The open drawer icon */}
                     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
                         <IconButton
                             size="large"
-                            onClick={handleOpenNavMenu}
+                            onClick={handleOpenDrawer}
                             color="inherit"
                         >
                             <MenuIcon />
                         </IconButton>
 
                     </Box>
-                    <TemporaryDrawer closed={handleCloseNavMenu} open={anchorElNav} />
+
+                    <TemporaryDrawer closed={handleCloseDrawer} open={drawerOpen} />
+                    
                     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }} component={Link} to="/">
                         <img alt="Slang Labs logo" style={{ height: '20px' }} src={logo} />
                     </Box>
 
+                    {/* Each page's link button in the navbar */}
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         {pages.map((page) => (
                             <Button
                                 key={page.name}
                                 component={Link}
-                                onClick={handleCloseNavMenu}
+                                onClick={handleCloseDrawer}
                                 sx={{ my: 2, color: 'inherit', display: 'block' }}
                                 to={page.link}
                             >
@@ -127,13 +130,11 @@ const ResponsiveAppBar = () => {
                         ))}
                     </Box>
 
-                    <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                        <WbSunnyIcon sx={{ height: 'auto' }} />
-                        <Switch onChange={themeChanged} checked={themeVal === 'dark' ? true : false} />
-                        <DarkModeIcon sx={{ marginRight: 2, height: 'auto' }} />
+                    <Box sx={{ display: { xs: 'none', md: 'flex' }, marginRight: 2 }}>
+                        <ThemeToggle/>
                     </Box>
 
-
+                    {/* Show the shopping cart icon if there are items in the cart */}
                     {amountInCart > 0
                         ? <Box>
                             <Badge badgeContent={amountInCart} color="secondary" overlap="circular">

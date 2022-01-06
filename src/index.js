@@ -6,6 +6,7 @@ import App from './App';
 
 ReactDOM.render(
     <HashRouter>
+        {/* Pass the Redux store */}
         <Provider store={store}>
             <App />
         </Provider>

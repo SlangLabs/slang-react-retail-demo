@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { v4 as uuidv4 } from 'uuid';
 
+// Load the data from localStorage
 const initalState = () => {
     const arr = localStorage.getItem('orderHistory');
     if (arr === null) {
@@ -36,7 +37,7 @@ export const orderHistorySlice = createSlice({
             state.orders[uuid] = { date: Date.now(), items: items, cancelled: false }
         },
         cancelOrder: (state, action) => {
-            // Pass the UUID of an order
+            // Receives the UUID of an order
             const uuid = action.payload;
             state.orders[uuid].cancelled = true;
         }
@@ -46,6 +47,7 @@ export const orderHistorySlice = createSlice({
 const orderHistoryMiddleware = (store) => (next) => (action) => {
     let result = next(action);
 
+    // If the action is part of orderHistorySlice, store the object in orderHistory
     if (action.type.length >= 12 && action.type.substring(0, 12) === 'orderHistory') {
         console.log(store.getState().orderHistory)
 

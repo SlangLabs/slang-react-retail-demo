@@ -2,10 +2,10 @@ import React from 'react';
 import { FormControl, InputLabel, OutlinedInput, InputAdornment, IconButton, Box, Button } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import CloseIcon from '@mui/icons-material/Close';
-import KeyboardVoiceIcon from '@mui/icons-material/KeyboardVoice';
 
 const SearchBar = (props) => {
 
+    // Determine if the enter key was pressed
     const checkEnter = (event) => {
         if (event.key === 'Enter') {
             props.makeSearch();
@@ -21,7 +21,8 @@ const SearchBar = (props) => {
                     sx={{ fontSize: 20 }}
                     id="outlined-adornment-amount"
                     startAdornment={<InputAdornment position="start"><SearchIcon /></InputAdornment>}
-                    endAdornment={props.searchTerm.trim() !== ''
+                    endAdornment={/* Show the clear search term button if there is a search term */
+                        props.searchTerm.trim() !== ''
                         ? (<InputAdornment position="end">
                             <IconButton edge="end" onClick={props.clearSearch}>
                                 <CloseIcon />
@@ -31,7 +32,9 @@ const SearchBar = (props) => {
                     }
                     label="Amount"
                     value={props.searchTerm}
-                    onChange={(event) => props.changeSearchTerm(event.target.value)}
+                    onChange={/* Change the parent component's searchTerm state if the term has changed */
+                        (event) => props.changeSearchTerm(event.target.value)
+                    }
                 />
             </FormControl>
             <Button onClick={props.makeSearch} variant="contained" sx={{ marginLeft: 1, height: '100%', paddingTop: 2.4, paddingBottom: 2.4 }}><SearchIcon/></Button>

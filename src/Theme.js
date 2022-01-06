@@ -1,3 +1,4 @@
+// Create the colour palette
 const palette = (mode) => ({
     palette: {
         mode,

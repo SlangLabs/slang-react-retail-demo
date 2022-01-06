@@ -34,6 +34,7 @@ export const months = {
     11: 'December',
 }
 
+// Format a date object to a string
 export const formatDate = (date) => {
     let hour = date.getHours()
 

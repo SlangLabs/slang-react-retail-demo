@@ -18,9 +18,8 @@ import { ScrollToTop } from './Utils'
 
 
 const App = () => {
+    // Get the theme value from Redux and create the theme
     const themeVal = useSelector((state) => state.theme.value)
-    const dispatch = useDispatch()
-
     const theme = createTheme(palette(themeVal));
 
     return (
@@ -43,7 +42,6 @@ const App = () => {
                         <Route path="order">
                             <Route path=":key" element={<OrderPage/>} />
                         </Route>
-
                     </Routes>
                 </Container>
             </ThemeProvider>

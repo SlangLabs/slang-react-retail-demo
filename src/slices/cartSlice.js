@@ -12,11 +12,19 @@ const initalState = () => {
 
 export const cartSlice = createSlice({
     name: 'cart',
+    /* Structure: 
+    {
+        items: {
+            id: amount,
+            ...
+        }
+    }
+    */
     initialState: initalState,
     reducers: {
         // If item does not exist, adds it. Otherwise, increments the amount
         addOne: (state, action) => {
-            // Pass the index of the item
+            // Receives the index of the item
             const id = action.payload;
 
             if (state.items.hasOwnProperty(id)) {
@@ -25,8 +33,9 @@ export const cartSlice = createSlice({
                 state.items[id] = 1;
             }
         },
+        // If there is one of the item, remove it from the cart. Otherwise, decrements the amount
         removeOne: (state, action) => {
-            // Pass the index of the item
+            // Receives the index of the item
             const id = action.payload;
 
             if (state.items.hasOwnProperty(id)) {
@@ -37,6 +46,7 @@ export const cartSlice = createSlice({
                 }
             }
         },
+        // Clears the cart
         removeAll: (state) => {
             state.items = {};
         }
@@ -46,7 +56,7 @@ export const cartSlice = createSlice({
 const cartMiddleware = (store) => (next) => (action) => {
     let result = next(action);
 
-    // If the action is part of cartSlice
+    // If the action is part of cartSlice, store it in localStorage
     if (action.type.length >= 5 && action.type.substring(0, 4) === 'cart') {
         console.log(store.getState().cart)
 
