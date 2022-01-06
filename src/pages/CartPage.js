@@ -80,13 +80,21 @@ const CartPage = () => {
             </Snackbar>
 
             <Typography sx={{ marginTop: 2 }} variant="h5">My Cart</Typography>
-            <GroceryList sx={{ marginBottom: 2, marginTop: 2, paddingBottom: 8 }} groceries={itemsInCart} />
 
-            <Tooltip title="Clear Cart" placement="top">
-                <Fab onClick={() => setClearDialogOpen(true)} color="secondary" sx={{ position: 'fixed', bottom: { sm: 96, xs: 80 }, right: 32 }}>
-                    <RemoveShoppingCartOutlinedIcon />
-                </Fab>
-            </Tooltip>
+
+            {Object.keys(cartItemKeys).length > 0
+                ? (
+                    <React.Fragment>
+                        <GroceryList sx={{ marginBottom: 2, marginTop: 2, paddingBottom: 8 }} groceries={itemsInCart} />
+                        <Tooltip title="Clear Cart" placement="top">
+                            <Fab onClick={() => setClearDialogOpen(true)} color="secondary" sx={{ position: 'fixed', bottom: { sm: 96, xs: 80 }, right: 32 }}>
+                                <RemoveShoppingCartOutlinedIcon />
+                            </Fab>
+                        </Tooltip>
+                    </React.Fragment>
+                )
+                : <Typography sx={{ marginTop: 2 }} variant="h6" color="text.secondary">Your cart seems to be empty.</Typography>
+            }
 
             <ClearCartDialog open={clearDialogOpen} onClose={() => setClearDialogOpen(false)} />
 
@@ -94,7 +102,10 @@ const CartPage = () => {
                 <Toolbar>
                     <Typography variant="h6">Total: ₹{cost}</Typography>
                     <Box sx={{ flexGrow: 1 }} />
-                    <Button onClick={placeOrder} color="success" variant="contained">Place Order</Button>
+                    {Object.keys(cartItemKeys).length > 0
+                        ? <Button onClick={placeOrder} color="success" variant="contained">Place Order</Button>
+                        : null
+                    }
                 </Toolbar>
             </AppBar>
         </React.Fragment>

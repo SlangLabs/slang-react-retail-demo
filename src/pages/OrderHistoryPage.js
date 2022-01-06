@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from 'react-redux'
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry"
 import { Link } from "react-router-dom";
 import data from '../data/data';
-import orders from '../data/dummyOrders'
 import { formatDate } from '../Utils'
 
 
@@ -56,13 +55,21 @@ const OrderHistoryPage = () => {
 
     return (
         <Box sx={{ marginTop: 2 }}>
-            <ResponsiveMasonry columnsCountBreakPoints={{ 300: 1, 600: 2, 900: 3 }}>
-                <Masonry gutter="20px">
-                    {Array.from(sortedOrdersKeys).map((key, index) => (
-                        <OrderHistoryItem key={index} orderKey={key} order={orders[key]} />
-                    ))}
-                </Masonry>
-            </ResponsiveMasonry>
+            <Typography sx={{ marginTop: 2, marginBottom: 2 }} variant='h5'>
+                Order History
+            </Typography>
+
+            {sortedOrdersKeys.length > 0
+                ? (<ResponsiveMasonry columnsCountBreakPoints={{ 300: 1, 600: 2, 900: 3 }}>
+                    <Masonry gutter="20px">
+                        {Array.from(sortedOrdersKeys).map((key, index) => (
+                            <OrderHistoryItem key={index} orderKey={key} order={orders[key]} />
+                        ))}
+                    </Masonry>
+                </ResponsiveMasonry>)
+                : <Typography sx={{ marginTop: 2 }} variant="h6" color="text.secondary">You have not made any orders.</Typography>
+            }
+
         </Box>
     );
 }

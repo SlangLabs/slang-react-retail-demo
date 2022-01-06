@@ -5,7 +5,6 @@ import Masonry, { ResponsiveMasonry } from "react-responsive-masonry"
 import { useSelector, useDispatch } from 'react-redux'
 import { cancelOrder } from '../slices/orderHistorySlice'
 import data from '../data/data';
-import orders from '../data/dummyOrders'
 import fruitsVeggiesImage from '../assets/img/fruits-veggies.jpg'
 import { formatDate } from '../Utils'
 
