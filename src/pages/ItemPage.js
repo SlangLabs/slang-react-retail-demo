@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons'
 import { useSelector, useDispatch } from 'react-redux'
 import { addOne, removeOne } from '../slices/cartSlice'
+import NotFoundPage from './NotFoundPage'
 import data from '../data/data'
 import fruitsVeggiesImage from '../assets/img/fruits-veggies.jpg'
 
@@ -31,7 +32,7 @@ const ItemPage = () => {
 
     // If the key is not part of any item, go to 404 page
     if (isInvalid) {
-        return 'Invalid item number'
+        return <NotFoundPage/>;
     }
 
     // Get the item's attributes

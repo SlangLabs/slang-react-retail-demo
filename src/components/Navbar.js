@@ -59,7 +59,7 @@ const TemporaryDrawer = (props) => {
                     </ListItem>
                 ))}
                 <ListItem>
-                    <ThemeToggle/>
+                    <ThemeToggle />
                 </ListItem>
             </List>
         </Box>
@@ -110,7 +110,7 @@ const ResponsiveAppBar = () => {
                     </Box>
 
                     <TemporaryDrawer closed={handleCloseDrawer} open={drawerOpen} />
-                    
+
                     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }} component={Link} to="/">
                         <img alt="Slang Labs logo" style={{ height: '20px' }} src={logo} />
                     </Box>
@@ -131,7 +131,7 @@ const ResponsiveAppBar = () => {
                     </Box>
 
                     <Box sx={{ display: { xs: 'none', md: 'flex' }, marginRight: 2 }}>
-                        <ThemeToggle/>
+                        <ThemeToggle />
                     </Box>
 
                     {/* Show the shopping cart icon if there are items in the cart */}

@@ -18,7 +18,7 @@ export const objectFilter = (obj, predicate) =>
         .filter(key => predicate(obj[key]))
         .reduce((res, key) => (res[key] = obj[key], res), {});
 
-        
+
 export const months = {
     0: 'January',
     1: 'February',

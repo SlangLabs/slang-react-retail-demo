@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Typography, Card, CardContent, CardActionArea, CardMedia, Box, Button, Snackbar, Chip, AppBar, Toolbar, Alert } from '@mui/material';
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry"
 import { useSelector, useDispatch } from 'react-redux'
 import { cancelOrder } from '../slices/orderHistorySlice'
 import data from '../data/data';
+import NotFoundPage from './NotFoundPage';
 import fruitsVeggiesImage from '../assets/img/fruits-veggies.jpg'
 import { formatDate } from '../Utils'
 
@@ -62,7 +63,7 @@ const OrderPage = () => {
 
     // If the order does not exist, redirect to 404 page
     if (order === undefined) {
-        return "That order does not exist"
+        return <NotFoundPage/>;
     }
 
     // When an order is cancelled, show the cancelled notification and call the respective Redux event
@@ -93,7 +94,7 @@ const OrderPage = () => {
             </Snackbar>
 
             <Typography sx={{ marginTop: 2 }} variant="h5">Your order on {date}</Typography>
-            
+
             <Box sx={{ marginBottom: 2, marginTop: 2, paddingBottom: 8 }}>
                 <ResponsiveMasonry columnsCountBreakPoints={{ 0: 1, 700: 2, 1000: 3 }}>
                     <Masonry gutter="20px">

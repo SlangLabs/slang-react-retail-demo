@@ -33,7 +33,7 @@ export const orderHistorySlice = createSlice({
             // Receives an object. Key is item ID, value is quantity of the item.
             const items = action.payload;
             const uuid = uuidv4();
-            
+
             state.orders[uuid] = { date: Date.now(), items: items, cancelled: false }
         },
         cancelOrder: (state, action) => {

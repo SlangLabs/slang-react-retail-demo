@@ -23,12 +23,12 @@ const SearchBar = (props) => {
                     startAdornment={<InputAdornment position="start"><SearchIcon /></InputAdornment>}
                     endAdornment={/* Show the clear search term button if there is a search term */
                         props.searchTerm.trim() !== ''
-                        ? (<InputAdornment position="end">
-                            <IconButton edge="end" onClick={props.clearSearch}>
-                                <CloseIcon />
-                            </IconButton>
-                        </InputAdornment>)
-                        : null
+                            ? (<InputAdornment position="end">
+                                <IconButton edge="end" onClick={props.clearSearch}>
+                                    <CloseIcon />
+                                </IconButton>
+                            </InputAdornment>)
+                            : null
                     }
                     label="Amount"
                     value={props.searchTerm}
@@ -37,7 +37,7 @@ const SearchBar = (props) => {
                     }
                 />
             </FormControl>
-            <Button onClick={props.makeSearch} variant="contained" sx={{ marginLeft: 1, height: '100%', paddingTop: 2.4, paddingBottom: 2.4 }}><SearchIcon/></Button>
+            <Button onClick={props.makeSearch} variant="contained" sx={{ marginLeft: 1, height: '100%', paddingTop: 2.4, paddingBottom: 2.4 }}><SearchIcon /></Button>
         </Box>
     );
 }
