@@ -6,7 +6,6 @@ import data from '../data/data'
 import { objectFilter } from '../Utils'
 
 
-
 const OffersPage = () => {
     const [groceries, setGroceries] = useState(objectFilter(data, (item) => { return item.hasOwnProperty('offer') }));
 
@@ -16,8 +15,7 @@ const OffersPage = () => {
                 Offers
             </Typography>
 
-            <SearchBar sx={{ marginTop: 2, marginBottom: 3 }} />
-            <GroceryList groceries={groceries} />
+            <GroceryList groceries={groceries} sx={{ marginBottom: 2, marginTop: 2 }} />
         </React.Fragment>
     );
 }

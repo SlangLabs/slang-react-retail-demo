@@ -10,7 +10,7 @@ const HomePage = () => {
     return (
         <React.Fragment>
             <SearchBar sx={{ marginTop: 3, marginBottom: 3 }} />
-            <GroceryList groceries={groceries}/>
+            <GroceryList groceries={groceries} sx={{ marginBottom: 2 }}/>
         </React.Fragment>
     );
 }

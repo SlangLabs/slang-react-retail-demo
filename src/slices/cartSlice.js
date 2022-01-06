@@ -1,4 +1,4 @@
-import { createSlice, isAllOf, isAnyOf } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 
 // Get items from the cart that were stored in localStorage
 const initalState = () => {
@@ -36,6 +36,9 @@ export const cartSlice = createSlice({
                     state.items[id]--;
                 }
             }
+        },
+        removeAll: (state) => {
+            state.items = {};
         }
     },
 })
@@ -53,7 +56,7 @@ const cartMiddleware = (store) => (next) => (action) => {
     return result;
 };
 
-export const { addOne, removeOne } = cartSlice.actions
+export const { addOne, removeOne, removeAll } = cartSlice.actions
 
 export { cartMiddleware }
 

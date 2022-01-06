@@ -40,8 +40,6 @@ const ItemPage = () => {
         return 'Invalid item number'
     }
 
-    console.log(amount)
-
     const item = data[itemKey];
 
     return (

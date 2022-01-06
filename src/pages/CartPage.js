@@ -1,40 +1,100 @@
-import React from 'react';
-import { Box, Typography, Fab, AppBar, Toolbar, Button } from '@mui/material'
-import Masonry, { ResponsiveMasonry } from "react-responsive-masonry"
+import React, { useState } from 'react';
+import { Box, Typography, Fab, AppBar, Toolbar, Button, Tooltip, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Snackbar, Alert } from '@mui/material'
 import { useSelector, useDispatch } from 'react-redux'
 import RemoveShoppingCartOutlinedIcon from '@mui/icons-material/RemoveShoppingCartOutlined';
-import GroceryItem from '../components/GroceryItem';
+import GroceryList from '../components/GroceryList';
+import { removeAll } from '../slices/cartSlice'
+import { addOrder } from '../slices/orderHistorySlice'
 import data from '../data/data'
 
+
+const ClearCartDialog = (props) => {
+    const [open, setOpen] = useState(false);
+    const dispatch = useDispatch();
+
+    const clearCart = () => {
+        dispatch(removeAll());
+        props.onClose();
+    }
+
+    return (
+        <div>
+            <Dialog
+                open={props.open}
+                onClose={props.onClose}
+            >
+                <DialogTitle>
+                    Clear Cart
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        Are you sure you want to clear all items from the cart?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={props.onClose} autoFocus>Cancel</Button>
+                    <Button color="error" onClick={clearCart}>
+                        Clear
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        </div>
+    );
+}
+
+
 const CartPage = () => {
-    const cartItems = useSelector((state) => state.cart.items)
+    const [clearDialogOpen, setClearDialogOpen] = useState(false);
+    const [orderPlaced, setOrderPlaced] = useState(false);
 
-    console.log(cartItems)
+    // Holds the items in cart and the amounts of each item
+    const cartItemKeys = useSelector((state) => state.cart.items)
+    const dispatch = useDispatch();
 
-    Array.from(Object.keys(cartItems)).map((key, index) => (console.log(key)))
+    const itemsInCart = {}
+
+    for (const key in cartItemKeys) {
+        itemsInCart[key] = data[key];
+    }
+
+    const placeOrder = () => {
+        dispatch(addOrder(cartItemKeys));
+        dispatch(removeAll());
+        setOrderPlaced(true);
+    }
+
+    let cost = 0;
+
+    for (const key in itemsInCart) {
+        cost += itemsInCart[key].price * cartItemKeys[key];
+    }
+
+    cost = cost.toFixed(2);
 
     return (
         <React.Fragment>
+            <Snackbar open={orderPlaced} autoHideDuration={6000} onClose={() => setOrderPlaced(false)}>
+                <Alert onClose={() => setOrderPlaced(false)} severity="success" sx={{ width: '100%' }}>
+                    Your order has been placed!
+                </Alert>
+            </Snackbar>
+
             <Typography sx={{ marginTop: 2 }} variant="h5">My Cart</Typography>
-            <Box sx={{ marginBottom: 2, marginTop: 2, paddingBottom: 8 }}>
-                <ResponsiveMasonry columnsCountBreakPoints={{ 600: 1, 900: 2 }}>
-                    <Masonry gutter="20px">
-                        {/* key holds the index of the data, while index holds the array index (starting from 0)*/}
-                        {Array.from(Object.keys(cartItems)).map((key, index) => (
-                            <GroceryItem key={index} itemKey={key} item={data[key]} />
-                        ))}
-                    </Masonry>
-                </ResponsiveMasonry>
-            </Box>
-            <Fab color="secondary" sx={{ position: 'fixed', bottom: { sm: 96, xs: 80 }, right: 32 }}>
-                <RemoveShoppingCartOutlinedIcon />
-            </Fab>
+            <GroceryList sx={{ marginBottom: 2, marginTop: 2, paddingBottom: 8 }} groceries={itemsInCart} />
+
+            <Tooltip title="Clear Cart" placement="top">
+                <Fab onClick={() => setClearDialogOpen(true)} color="secondary" sx={{ position: 'fixed', bottom: { sm: 96, xs: 80 }, right: 32 }}>
+                    <RemoveShoppingCartOutlinedIcon />
+                </Fab>
+            </Tooltip>
+
+            <ClearCartDialog open={clearDialogOpen} onClose={() => setClearDialogOpen(false)} />
 
             <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
                 <Toolbar>
-                    <Typography variant="h6">Total: ₹333</Typography>
+                    <Typography variant="h6">Total: ₹{cost}</Typography>
                     <Box sx={{ flexGrow: 1 }} />
-                    <Button color="success" variant="contained">Place Order</Button>
+                    <Button onClick={placeOrder} color="success" variant="contained">Place Order</Button>
                 </Toolbar>
             </AppBar>
         </React.Fragment>
