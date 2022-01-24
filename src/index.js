@@ -1,15 +1,15 @@
 import ReactDOM from 'react-dom';
-import { store } from './Store'
 import { Provider } from 'react-redux'
 import { HashRouter } from "react-router-dom";
+import { store } from './Store'
 import App from './App';
 
+
 ReactDOM.render(
-    <HashRouter>
-        {/* Pass the Redux store */}
-        <Provider store={store}>
+    <Provider store={store}>
+        <HashRouter>
             <App />
-        </Provider>
-    </HashRouter>,
+        </HashRouter>
+    </Provider>,
     document.getElementById('root')
 );

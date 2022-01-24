@@ -1,6 +1,6 @@
 import React from 'react';
 import { Grid, Typography, Chip, Box, Button, ButtonGroup } from '@mui/material';
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useTheme } from '@mui/material/styles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons'
@@ -14,7 +14,6 @@ import fruitsVeggiesImage from '../assets/img/fruits-veggies.jpg'
 // The page for a specific item
 const ItemPage = () => {
     const params = useParams();
-    const navigate = useNavigate();
     const theme = useTheme();
 
     let itemKey = params.itemKey;
@@ -56,7 +55,7 @@ const ItemPage = () => {
                     </ButtonGroup>)
                 }
 
-                <Typography sx={{ marginTop: 2 }} variant="h5">₹{item.price}</Typography>
+                <Typography sx={{ marginTop: 2 }} variant="h5">₹{item.price.toFixed(2)}</Typography>
                 <Chip sx={{ marginTop: 2 }} label={`${item.size}kg`} variant="outlined" />
                 <Typography sx={{ marginTop: 2, whiteSpace: 'pre-line' }}>{item.description}</Typography>
             </Grid>

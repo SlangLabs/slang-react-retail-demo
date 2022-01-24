@@ -49,8 +49,6 @@ const orderHistoryMiddleware = (store) => (next) => (action) => {
 
     // If the action is part of orderHistorySlice, store the object in orderHistory
     if (action.type.length >= 12 && action.type.substring(0, 12) === 'orderHistory') {
-        console.log(store.getState().orderHistory)
-
         localStorage.setItem('orderHistory', JSON.stringify(store.getState().orderHistory.orders));
     }
 

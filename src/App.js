@@ -1,9 +1,10 @@
-import React from 'react';
-import { Routes, Route } from "react-router-dom";
-import { CssBaseline, Container } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { Routes, Route, Redirect, useNavigate } from "react-router-dom";
+import { CssBaseline, Container, Snackbar, Alert } from '@mui/material';
 import ThemeProvider from '@mui/material/styles/ThemeProvider';
 import { createTheme } from '@mui/material/styles';
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import SlangRetailAssistant from '@slanglabs/slang-retail-assistant';
 import ResponsiveAppBar from "./components/Navbar"
 import "./assets/App.css";
 import palette from './Theme';
@@ -15,15 +16,85 @@ import OrderPage from './pages/OrderPage'
 import CartPage from './pages/CartPage'
 import NotFoundPage from './pages/NotFoundPage'
 import { ScrollToTop } from './Utils'
+import { reset, action } from './slices/assistantSlice'
+
+
+SlangRetailAssistant.init({
+    requestedLocales: ['en-IN'],
+    assistantID: '815199d4e21c40489370d691f6d6c364',
+    apiKey: '7cbb0751404d494ab84dc7c1a7828e3c',
+})
+
+
+SlangRetailAssistant.ui.show();
 
 
 const App = () => {
+    const [invalidNavi, setInvalidNavi] = useState(null);
     // Get the theme value from Redux and create the theme
     const themeVal = useSelector((state) => state.theme.value)
     const theme = createTheme(palette(themeVal));
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const orderManagement = (orderInfo, orderManagementUserJourney) => {
+        console.log('order', orderInfo, orderManagementUserJourney)
+
+        navigate('/order-history');
+
+        dispatch(action({ action: 'order', info: JSON.parse(JSON.stringify(orderInfo)) }));
+
+        orderManagementUserJourney.setViewSuccess();
+        return orderManagementUserJourney.AppStates.VIEW_ORDER;
+    }
+
+    const search = (searchInfo, searchUserJourney) => {           
+        navigate('/');
+
+        dispatch(action({ action: 'search', info: JSON.parse(JSON.stringify(searchInfo)) }));
+
+        searchUserJourney.setSuccess();
+        return searchUserJourney.AppStates.SEARCH_RESULTS;
+    }
+
+    const navigation = (navigationInfo, navigationUserJourney) => {
+        console.log('navi', navigationInfo, navigationUserJourney)
+
+        switch (navigationInfo.target) {
+            case 'back':
+                navigate(-1);
+                break;
+            case 'order':
+                navigate('/order-history');
+                break;
+            case 'cart':
+                navigate('/cart');
+                break;
+            default:
+                setInvalidNavi(true);
+        }
+    
+        navigationUserJourney.setNavigationSuccess();
+        return navigationUserJourney.AppState.NAVIGATION;
+    }
+
+    const actionHandler = {
+        onSearch: search,
+        onOrderManagement: orderManagement,
+        onNavigation: navigation,
+    }
+
+    SlangRetailAssistant.setAction(actionHandler);
+
 
     return (
         <React.StrictMode>
+            <Snackbar autoHideDuration={6000} open={invalidNavi} onClose={() => setInvalidNavi(false)}>
+                <Alert onClose={() => setInvalidNavi(false)} severity="error" sx={{ width: '100%' }}>
+                    There is no such page.
+                </Alert>
+            </Snackbar>
+
             <ScrollToTop />
             <ThemeProvider theme={theme}>
                 <CssBaseline />
@@ -43,7 +114,7 @@ const App = () => {
                             <Route path=":key" element={<OrderPage />} />
                         </Route>
 
-                        <Route path="*" element={<NotFoundPage/>} />
+                        <Route path="*" element={<NotFoundPage />} />
                     </Routes>
                 </Container>
             </ThemeProvider>

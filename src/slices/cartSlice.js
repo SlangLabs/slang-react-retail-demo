@@ -58,8 +58,6 @@ const cartMiddleware = (store) => (next) => (action) => {
 
     // If the action is part of cartSlice, store it in localStorage
     if (action.type.length >= 5 && action.type.substring(0, 4) === 'cart') {
-        console.log(store.getState().cart)
-
         localStorage.setItem('cart', JSON.stringify(store.getState().cart.items));
     }
 

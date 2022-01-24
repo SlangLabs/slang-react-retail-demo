@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Card, CardActionArea, CardContent, Typography, Chip } from '@mui/material';
 import { useSelector } from 'react-redux'
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry"
@@ -52,14 +52,22 @@ const OrderHistoryItem = (props) => {
 // The order history page component
 const OrderHistoryPage = () => {
     // Get all of the orders from Redux
-    const orders = useSelector((state) => state.orderHistory.orders)
+    const orders = useSelector((state) => state.orderHistory.orders);
+    const orderAction = useSelector((state) => state.assistant.data);
 
     // Show the most recent orders first
     const sortedOrdersKeys = Object.keys(orders);
     sortedOrdersKeys.sort((a, b) => { return orders[b].date - orders[a].date });
 
+    useEffect(() => {
+        if (orderAction.action === 'order') {
+            console.log(orderAction)
+        }
+        
+    }, [orderAction])
+
     return (
-        <Box sx={{ marginTop: 2 }}>
+        <Box sx={{ marginTop: 2, marginBottom: 2 }}>
             <Typography sx={{ marginTop: 2, marginBottom: 2 }} variant='h5'>
                 Order History
             </Typography>

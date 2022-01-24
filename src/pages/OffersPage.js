@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Typography, Box } from '@mui/material';
-import SearchBar from '../components/SearchBar'
 import GroceryList from '../components/GroceryList'
 import data from '../data/data'
 import { objectFilter } from '../Utils'

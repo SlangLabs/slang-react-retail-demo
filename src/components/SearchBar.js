@@ -12,6 +12,7 @@ const SearchBar = (props) => {
         }
     }
 
+
     return (
         <Box sx={{ display: 'flex', alignItems: 'center', ...props.sx }}>
             <FormControl fullWidth>
