@@ -54,8 +54,8 @@ const App = () => {
 
         dispatch(action({ action: 'search', info: JSON.parse(JSON.stringify(searchInfo)) }));
 
-        // searchUserJourney.setFailure();
-        return searchUserJourney.AppStates.ADD_TO_CART;
+        searchUserJourney.setSuccess();
+        return searchUserJourney.AppStates.SEARCH_RESULTS;
     }
 
     const navigation = (navigationInfo, navigationUserJourney) => {
