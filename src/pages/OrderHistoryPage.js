@@ -59,11 +59,21 @@ const OrderHistoryPage = () => {
     const sortedOrdersKeys = Object.keys(orders);
     sortedOrdersKeys.sort((a, b) => { return orders[b].date - orders[a].date });
 
+    // The user has requested an order management action
     useEffect(() => {
         if (orderAction.action === 'order') {
             console.log(orderAction)
+
+            const action = orderAction.info.orderAction;
+            const index = orderAction.info.orderIndex;
+
+            // TODO: Handle all cases related to order history
+            // View all orders
+            if (action === 'VIEW' && (index === null || index === 0)) {
+                return;
+            }                                
+
         }
-        
     }, [orderAction])
 
     return (

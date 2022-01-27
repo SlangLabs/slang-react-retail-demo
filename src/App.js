@@ -30,7 +30,6 @@ SlangRetailAssistant.ui.show();
 
 
 const App = () => {
-    const [invalidNavi, setInvalidNavi] = useState(null);
     // Get the theme value from Redux and create the theme
     const themeVal = useSelector((state) => state.theme.value)
     const theme = createTheme(palette(themeVal));
@@ -48,13 +47,15 @@ const App = () => {
         return orderManagementUserJourney.AppStates.VIEW_ORDER;
     }
 
-    const search = (searchInfo, searchUserJourney) => {           
+    const search = async (searchInfo, searchUserJourney) => {           
         navigate('/');
+
+        console.log('search', searchInfo, searchUserJourney)
 
         dispatch(action({ action: 'search', info: JSON.parse(JSON.stringify(searchInfo)) }));
 
-        searchUserJourney.setSuccess();
-        return searchUserJourney.AppStates.SEARCH_RESULTS;
+        // searchUserJourney.setFailure();
+        return searchUserJourney.AppStates.ADD_TO_CART;
     }
 
     const navigation = (navigationInfo, navigationUserJourney) => {
@@ -70,8 +71,11 @@ const App = () => {
             case 'cart':
                 navigate('/cart');
                 break;
+            case 'home':
+                navigate('/');
+                break;
             default:
-                setInvalidNavi(true);
+                
         }
     
         navigationUserJourney.setNavigationSuccess();
@@ -89,11 +93,6 @@ const App = () => {
 
     return (
         <React.StrictMode>
-            <Snackbar autoHideDuration={6000} open={invalidNavi} onClose={() => setInvalidNavi(false)}>
-                <Alert onClose={() => setInvalidNavi(false)} severity="error" sx={{ width: '100%' }}>
-                    There is no such page.
-                </Alert>
-            </Snackbar>
 
             <ScrollToTop />
             <ThemeProvider theme={theme}>
