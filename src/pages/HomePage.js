@@ -3,10 +3,12 @@ import { Typography, Box, Alert, Snackbar } from '@mui/material'
 import { useSelector, useDispatch } from 'react-redux'
 import SearchBar from '../components/SearchBar'
 import GroceryList from '../components/GroceryList'
-import { reset, action } from '../slices/assistantSlice'
 import data from '../data/data'
 import { objectFilter } from '../Utils'
+import { slangCallbacks } from '../App'
 
+
+export let searchCallback = () => { console.log('bruh') };
 
 // The home page component
 const HomePage = () => {
@@ -14,8 +16,12 @@ const HomePage = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [searchToBeMade, setSearchToBeMade] = useState(false);
     const [voiceSearchError, setVoiceSearchError] = useState(false);
-    const searchValue = useSelector((state) => state.assistant.data);
     const dispatch = useDispatch();
+
+    const searchHasItems = (term) => {
+        const filteredData = objectFilter(data, (item) => (item.name.toLowerCase().includes(term) || item.description.toLowerCase().includes(term)));
+        return Object.keys(filteredData).length !== 0;
+    }
 
     // On enter press or search button press, change the groceries state item
     const makeSearch = () => {
@@ -31,21 +37,38 @@ const HomePage = () => {
         setGroceries(data);
     }
 
-    useEffect(() => {
-        if (searchValue.action === 'search') {
-            dispatch(reset());
-            const searchTerm = searchValue.info.item.productType
-            // If the user searches for something like "organic" there are no cases to handle that so throw an error to the user
-            console.log(searchTerm);
-            if (searchTerm === null) {
-                setVoiceSearchError(true);
-                clearSearch();
-                return;
-            }
-            setSearchTerm(searchTerm);
-            setSearchToBeMade(true);
+    searchCallback = (searchInfo, searchUserJourney) => {
+        console.log(searchInfo);
+
+        // For now we do not support add to cart
+        if (searchInfo.isAddToCart) {
+            searchUserJourney.setFailure();
+            return searchUserJourney.AppStates.ADD_TO_CART;
         }
-    }, [searchValue])
+
+        const searchTerm = searchInfo.item.productType
+
+        // If the user searches for something like "organic" there are no cases to handle that so throw an error to the user
+        console.log(searchTerm);
+        if (searchTerm === null) {
+            // return ''
+            clearSearch();
+            searchUserJourney.setItemNotSpecified();
+            return searchUserJourney.AppStates.SEARCH_RESULTS;
+        }
+
+        setSearchTerm(searchTerm);
+        setSearchToBeMade(true);
+
+        if (searchHasItems(searchTerm)) {
+            searchUserJourney.setSuccess();
+        } else {
+            searchUserJourney.setItemNotFound();
+        }
+        
+        return searchUserJourney.AppStates.SEARCH_RESULTS;
+    }
+            
 
     useEffect(() => {
         if (searchToBeMade) {

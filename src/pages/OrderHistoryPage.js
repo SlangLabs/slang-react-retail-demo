@@ -53,28 +53,13 @@ const OrderHistoryItem = (props) => {
 const OrderHistoryPage = () => {
     // Get all of the orders from Redux
     const orders = useSelector((state) => state.orderHistory.orders);
-    const orderAction = useSelector((state) => state.assistant.data);
 
     // Show the most recent orders first
     const sortedOrdersKeys = Object.keys(orders);
     sortedOrdersKeys.sort((a, b) => { return orders[b].date - orders[a].date });
 
     // The user has requested an order management action
-    useEffect(() => {
-        if (orderAction.action === 'order') {
-            console.log(orderAction)
-
-            const action = orderAction.info.orderAction;
-            const index = orderAction.info.orderIndex;
-
-            // TODO: Handle all cases related to order history
-            // View all orders
-            if (action === 'VIEW' && (index === null || index === 0)) {
-                return;
-            }                                
-
-        }
-    }, [orderAction])
+    // To do
 
     return (
         <Box sx={{ marginTop: 2, marginBottom: 2 }}>

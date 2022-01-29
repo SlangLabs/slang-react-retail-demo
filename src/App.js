@@ -16,7 +16,7 @@ import OrderPage from './pages/OrderPage'
 import CartPage from './pages/CartPage'
 import NotFoundPage from './pages/NotFoundPage'
 import { ScrollToTop } from './Utils'
-import { reset, action } from './slices/assistantSlice'
+import { searchCallback } from './pages/HomePage'
 
 
 SlangRetailAssistant.init({
@@ -29,6 +29,9 @@ SlangRetailAssistant.init({
 SlangRetailAssistant.ui.show();
 
 
+export const slangCallbacks = { };
+
+
 const App = () => {
     // Get the theme value from Redux and create the theme
     const themeVal = useSelector((state) => state.theme.value)
@@ -36,29 +39,27 @@ const App = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const orderManagement = (orderInfo, orderManagementUserJourney) => {
+    // To implement
+    const onOrderManagementCallback = (orderInfo, orderManagementUserJourney) => {
         console.log('order', orderInfo, orderManagementUserJourney)
 
         navigate('/order-history');
 
-        dispatch(action({ action: 'order', info: JSON.parse(JSON.stringify(orderInfo)) }));
+        console.log('not implemented yet!')
 
         orderManagementUserJourney.setViewSuccess();
         return orderManagementUserJourney.AppStates.VIEW_ORDER;
     }
 
-    const search = async (searchInfo, searchUserJourney) => {           
+    const onSearchCallback = (searchInfo, searchUserJourney) => {           
         navigate('/');
 
         console.log('search', searchInfo, searchUserJourney)
 
-        dispatch(action({ action: 'search', info: JSON.parse(JSON.stringify(searchInfo)) }));
-
-        searchUserJourney.setSuccess();
-        return searchUserJourney.AppStates.SEARCH_RESULTS;
+        return searchCallback(searchInfo, searchUserJourney);
     }
 
-    const navigation = (navigationInfo, navigationUserJourney) => {
+    const onNavigationCallback = (navigationInfo, navigationUserJourney) => {
         console.log('navi', navigationInfo, navigationUserJourney)
 
         switch (navigationInfo.target) {
@@ -74,22 +75,25 @@ const App = () => {
             case 'home':
                 navigate('/');
                 break;
+            case null:
+                navigationUserJourney.setTargetNotSpecified();
+                return navigationUserJourney.AppState.NAVIGATION; 
             default:
-                
+                navigationUserJourney.setNavigationFailure();
+                return navigationUserJourney.AppState.NAVIGATION; 
         }
-    
+
         navigationUserJourney.setNavigationSuccess();
-        return navigationUserJourney.AppState.NAVIGATION;
+
+        return navigationUserJourney.AppState.NAVIGATION; 
     }
 
-    const actionHandler = {
-        onSearch: search,
-        onOrderManagement: orderManagement,
-        onNavigation: navigation,
-    }
-
-    SlangRetailAssistant.setAction(actionHandler);
-
+    SlangRetailAssistant.setAction({
+        onSearch: onSearchCallback,
+        onOrderManagement: onOrderManagementCallback,
+        onNavigation: onNavigationCallback
+    })
+    
 
     return (
         <React.StrictMode>
