@@ -45,10 +45,13 @@ const CartPage = () => {
 
     // Holds the items in cart and the amounts of each item
     const cartItemKeys = useSelector((state) => state.cart.items)
+
+    console.log(cartItemKeys)
+
     const dispatch = useDispatch();
 
-    // Holds all items in cart with key being item key and value being every attribute of the item (from data)
-    const itemsInCart = {}
+    // Holds all items in cart with key being index and value being every attribute of the item (from data)
+    const itemsInCart = []
 
     for (const key in cartItemKeys) {
         itemsInCart[key] = data[key];
@@ -82,7 +85,7 @@ const CartPage = () => {
             <Typography sx={{ marginTop: 2 }} variant="h5">My Cart</Typography>
 
             {/* If there are items in the cart, display them. Otherwise, let the user know there are no items in the cart */}
-            {Object.keys(cartItemKeys).length > 0
+            {Object.keys(itemsInCart).length > 0
                 ? (
                     <React.Fragment>
                         <GroceryList sx={{ marginBottom: 2, marginTop: 2, paddingBottom: 8 }} groceries={itemsInCart} />
@@ -104,7 +107,7 @@ const CartPage = () => {
                 <Toolbar>
                     <Typography variant="h6">Total: ₹{price}</Typography>
                     <Box sx={{ flexGrow: 1 }} />
-                    {Object.keys(cartItemKeys).length > 0
+                    {Object.keys(itemsInCart).length > 0
                         ? <Button onClick={placeOrder} color="success" variant="contained">Place Order</Button>
                         : null
                     }

@@ -15,10 +15,10 @@ const pages = [
         name: 'Home',
         link: '/',
     },
-    {
-        name: 'Offers',
-        link: '/offers',
-    },
+    // { Hide offers page for now
+    //     name: 'Offers',
+    //     link: '/offers',
+    // },
     {
         name: 'Order History',
         link: '/order-history',

@@ -41,10 +41,6 @@ const ItemPage = () => {
         <Grid sx={{ marginTop: 1, marginBottom: 2 }} container spacing={2}>
             <Grid item xs={12} sm={8}>
                 <Typography variant="h3">{item.name}</Typography>
-                {'offer' in item
-                    ? <Typography color="text.secondary" variant="subtitle1">{item.offer}</Typography>
-                    : null
-                }
                 {/* If there is a nonzero number of the current item, show the plus and minus buttons, otherwise, show the add button */}
                 {amount === 0 || amount === undefined
                     ? <Button size="large" sx={{ marginTop: 2 }} onClick={() => dispatch(addOne(itemKey))} variant="contained">Add</Button>
@@ -56,8 +52,8 @@ const ItemPage = () => {
                 }
 
                 <Typography sx={{ marginTop: 2 }} variant="h5">₹{item.price.toFixed(2)}</Typography>
-                <Chip sx={{ marginTop: 2 }} label={`${item.size}kg`} variant="outlined" />
-                <Typography sx={{ marginTop: 2, whiteSpace: 'pre-line' }}>{item.description}</Typography>
+                <Chip sx={{ marginTop: 2 }} label={`${item.size}`} variant="outlined" />
+                <Typography sx={{ marginTop: 2, whiteSpace: 'pre-line' }}>Lorem ipsum is the item's description.</Typography>
             </Grid>
             <Grid item xs={12} sm={4}>
                 <Box
