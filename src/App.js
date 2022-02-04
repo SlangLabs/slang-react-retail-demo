@@ -16,7 +16,7 @@ import OrderPage from './pages/OrderPage'
 import CartPage from './pages/CartPage'
 import NotFoundPage from './pages/NotFoundPage'
 import { ScrollToTop } from './Utils'
-import { searchCallback } from './pages/HomePage'
+import { searchCallback } from './components/SearchBar'
 
 
 SlangRetailAssistant.init({

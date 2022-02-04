@@ -54,3 +54,7 @@ export const formatDate = (date) => {
 
     return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()} ${hour}:${minutes} ${ampm}`
 }
+
+export const toObject = (arr) => {
+    return arr.reduce((o, item, index) => ({ ...o, [index]: item}), {})
+}

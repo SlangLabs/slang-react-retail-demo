@@ -4,17 +4,9 @@ import { useSelector, useDispatch } from 'react-redux'
 import SearchBar from '../components/SearchBar'
 import GroceryList from '../components/GroceryList'
 import data from '../data/data'
-import { objectFilter } from '../Utils'
+import { objectFilter, toObject } from '../Utils'
 import { slangCallbacks } from '../App'
-
-
-export let searchCallback = () => { console.log('bruh') };
-
-
-const toObject = (arr) => {
-    return arr.reduce((o, item, index) => ({ ...o, [index]: item}), {})
-}
-
+ 
 
 // The home page component
 const HomePage = () => {
@@ -45,46 +37,7 @@ const HomePage = () => {
         setGroceries(dataObj);
     }
 
-    // searchCallback = (searchInfo, searchUserJourney) => {
-    //     console.log(searchInfo);
-
-    //     // For now we do not support add to cart
-    //     if (searchInfo.isAddToCart) {
-    //         searchUserJourney.setFailure();
-    //         return searchUserJourney.AppStates.ADD_TO_CART;
-    //     }
-
-    //     const searchTerm = searchInfo.item.productType
-
-    //     // If the user searches for something like "organic" there are no cases to handle that so throw an error to the user
-    //     console.log(searchTerm);
-    //     if (searchTerm === null) {
-    //         // return ''
-    //         clearSearch();
-    //         searchUserJourney.setItemNotSpecified();
-    //         return searchUserJourney.AppStates.SEARCH_RESULTS;
-    //     }
-
-    //     setSearchTerm(searchTerm);
-    //     setSearchToBeMade(true);
-
-    //     if (searchHasItems(searchTerm)) {
-    //         searchUserJourney.setSuccess();
-    //     } else {
-    //         searchUserJourney.setItemNotFound();
-    //     }
-        
-    //     return searchUserJourney.AppStates.SEARCH_RESULTS;
-    // }
-            
-
-    // useEffect(() => {
-    //     if (searchToBeMade) {
-    //         makeSearch();
-    //     }
-    // }, [searchToBeMade])
-
-    console.log(groceries);
+    // console.log(groceries);
 
     return (
 

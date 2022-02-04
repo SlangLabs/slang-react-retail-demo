@@ -1,10 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FormControl, InputLabel, OutlinedInput, InputAdornment, IconButton, Box, Button } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import CloseIcon from '@mui/icons-material/Close';
+import data from '../data/data'
+import { objectFilter, toObject } from '../Utils'
+
+
+export let searchCallback = () => { };
+
 
 const SearchBar = (props) => {
+    const dataObj = toObject(data);
+
     const [searchTerm, changeSearchTerm] = useState('');
+
+    const searchHasItems = (term) => {
+        const filteredData = objectFilter(dataObj, (item) => (item.name.toLowerCase().includes(term)));
+        return Object.keys(filteredData).length !== 0;
+    }
 
     // Determine if the enter key was pressed
     const checkEnter = (event) => {
@@ -18,6 +31,38 @@ const SearchBar = (props) => {
         props.clearSearch();
     }
 
+    searchCallback = (searchInfo, searchUserJourney) => {
+        console.log(searchInfo);
+
+        // For now we do not support add to cart
+        if (searchInfo.isAddToCart) {
+            searchUserJourney.setFailure();
+            return searchUserJourney.AppStates.ADD_TO_CART;
+        }
+
+        const newTerm = searchInfo.item.productType
+
+        // If the user searches for something like "organic" there are no cases to handle that so throw an error to the user
+        console.log(newTerm);
+        if (newTerm === null) {
+            // return ''
+            clearSearch();
+            searchUserJourney.setItemNotSpecified();
+            return searchUserJourney.AppStates.SEARCH_RESULTS;
+        }
+
+        changeSearchTerm(newTerm);
+        props.makeSearch(newTerm);
+
+        if (searchHasItems(newTerm)) {
+            searchUserJourney.setSuccess();
+        } else {
+            searchUserJourney.setItemNotFound();
+        }
+        
+        return searchUserJourney.AppStates.SEARCH_RESULTS;
+    }
+            
     return (
         <Box sx={{ display: 'flex', alignItems: 'center', ...props.sx }}>
             <FormControl fullWidth>

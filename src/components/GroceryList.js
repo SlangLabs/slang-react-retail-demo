@@ -17,13 +17,14 @@ const incrementalShow = 20;
 const GroceryList = (props) => {
     const [scrollPosition, setScrollPosition] = useState(0);
 
-    let totalAmountOfData = Object.keys(props.groceries).length;
+    console.log(props.groceries);
 
-    console.log('total amt data', totalAmountOfData);
+    let totalAmountOfData = Object.keys(props.groceries).length;
 
     // Show 20 items at a time
     const [numberShown, setNumberShown] = useState(Math.min(totalAmountOfData, incrementalShow));
     const [itemsShown, setItemsShown] = useState(sliceObject(props.groceries, 0, numberShown));
+    const [newGroceries, setNewGroceries] = useState(false);
 
     const handleScroll = () => {
         const position = window.pageYOffset;
@@ -40,6 +41,7 @@ const GroceryList = (props) => {
 
     useEffect(() => {
         setNumberShown(Math.min(totalAmountOfData, incrementalShow));
+        setNewGroceries(true);
     }, [props.groceries])
 
     useEffect(() => {
@@ -49,7 +51,6 @@ const GroceryList = (props) => {
 
         // User has scrolled to the end of page, show more items
         if (Math.abs(maxScroll - scrollPosition) <= 50) {
-            console.log('ree')
             if (numberShown === totalAmountOfData) {
                 return;
             }
@@ -59,9 +60,10 @@ const GroceryList = (props) => {
     }, [scrollPosition])
 
     useEffect(() => {
-        console.log(numberShown);
+        console.log(props.groceries);
         setItemsShown(sliceObject(props.groceries, 0, numberShown));
-    }, [numberShown])
+        setNewGroceries(false);
+    }, [numberShown, newGroceries])
 
     return (
         <Box sx={props.sx}>
