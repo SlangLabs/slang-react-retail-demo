@@ -17,8 +17,6 @@ const incrementalShow = 20;
 const GroceryList = (props) => {
     const [scrollPosition, setScrollPosition] = useState(0);
 
-    console.log(props.groceries);
-
     let totalAmountOfData = Object.keys(props.groceries).length;
 
     // Show 20 items at a time
@@ -60,7 +58,6 @@ const GroceryList = (props) => {
     }, [scrollPosition])
 
     useEffect(() => {
-        console.log(props.groceries);
         setItemsShown(sliceObject(props.groceries, 0, numberShown));
         setNewGroceries(false);
     }, [numberShown, newGroceries])

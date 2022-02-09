@@ -4,9 +4,17 @@ import SearchIcon from '@mui/icons-material/Search';
 import CloseIcon from '@mui/icons-material/Close';
 import data from '../data/data'
 import { objectFilter, toObject } from '../Utils'
+import appbase from '../api/appbase'
 
 
 export let searchCallback = () => { };
+
+
+const SearchController = (props) => {
+
+
+    return null;
+}
 
 
 const SearchBar = (props) => {
@@ -31,40 +39,38 @@ const SearchBar = (props) => {
         props.clearSearch();
     }
 
-    searchCallback = (searchInfo, searchUserJourney) => {
-        console.log(searchInfo);
+    // searchCallback = (searchInfo, searchUserJourney) => {
+    //     // For now we do not support add to cart
+    //     if (searchInfo.isAddToCart) {
+    //         searchUserJourney.setFailure();
+    //         return searchUserJourney.AppStates.ADD_TO_CART;
+    //     }
 
-        // For now we do not support add to cart
-        if (searchInfo.isAddToCart) {
-            searchUserJourney.setFailure();
-            return searchUserJourney.AppStates.ADD_TO_CART;
-        }
+    //     const newTerm = searchInfo.item.productType
 
-        const newTerm = searchInfo.item.productType
+    //     // If the user searches for something like "organic" there are no cases to handle that so throw an error to the user
+    //     if (newTerm === null) {
+    //         // return ''
+    //         clearSearch();
+    //         searchUserJourney.setItemNotSpecified();
+    //         return searchUserJourney.AppStates.SEARCH_RESULTS;
+    //     }
 
-        // If the user searches for something like "organic" there are no cases to handle that so throw an error to the user
-        console.log(newTerm);
-        if (newTerm === null) {
-            // return ''
-            clearSearch();
-            searchUserJourney.setItemNotSpecified();
-            return searchUserJourney.AppStates.SEARCH_RESULTS;
-        }
+    //     changeSearchTerm(newTerm);
+    //     props.makeSearch(newTerm);
 
-        changeSearchTerm(newTerm);
-        props.makeSearch(newTerm);
-
-        if (searchHasItems(newTerm)) {
-            searchUserJourney.setSuccess();
-        } else {
-            searchUserJourney.setItemNotFound();
-        }
+    //     if (searchHasItems(newTerm)) {
+    //         searchUserJourney.setNeedDisambiguation();
+    //     } else {
+    //         searchUserJourney.setItemNotFound();
+    //     }
         
-        return searchUserJourney.AppStates.SEARCH_RESULTS;
-    }
+    //     return searchUserJourney.AppStates.ADD_TO_CART;
+    // }
             
     return (
         <Box sx={{ display: 'flex', alignItems: 'center', ...props.sx }}>
+            <SearchController/>
             <FormControl fullWidth>
                 <InputLabel sx={{ fontSize: 20 }} htmlFor="outlined-adornment-amount">Search</InputLabel>
                 <OutlinedInput

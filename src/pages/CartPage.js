@@ -46,8 +46,6 @@ const CartPage = () => {
     // Holds the items in cart and the amounts of each item
     const cartItemKeys = useSelector((state) => state.cart.items)
 
-    console.log(cartItemKeys)
-
     const dispatch = useDispatch();
 
     // Holds all items in cart with key being index and value being every attribute of the item (from data)
