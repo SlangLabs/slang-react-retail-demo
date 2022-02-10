@@ -7,15 +7,15 @@ import data from '../data/data'
 import { objectFilter, dataToObject } from '../Utils'
 import { slangCallbacks } from '../App'
 import { query } from '../api/appbase'
-import { HotTubSharp } from '@mui/icons-material';
+
+
+const originalData = dataToObject(data);
 
 
 // The home page component
 const HomePage = () => {
-    const dataObj = dataToObject(data);
-
     // Convert the array into a object where the key is the index of the object
-    const [groceries, setGroceries] = useState(dataObj);
+    const [groceries, setGroceries] = useState(dataToObject(data));
     const [searchToBeMade, setSearchToBeMade] = useState(false);
     const [voiceSearchError, setVoiceSearchError] = useState(false);
     const dispatch = useDispatch();
@@ -42,7 +42,7 @@ const HomePage = () => {
 
     // Clear the search term and set the groceries back to all items
     const clearSearch = () => {
-        setGroceries(dataObj);
+        setGroceries(originalData);
     }
 
 

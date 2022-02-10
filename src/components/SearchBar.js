@@ -13,7 +13,6 @@ export let searchCallback = () => { };
 
 
 const SearchBar = (props) => {
-    const dataObj = dataToObject(data);
     const dispatch = useDispatch();
 
     const [searchTerm, changeSearchTerm] = useState('');

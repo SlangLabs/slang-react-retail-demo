@@ -41,10 +41,9 @@ const ClearCartDialog = (props) => {
 
 // The cart page component
 const CartPage = () => {
-    const dataObj = dataToObject(data);
-
     const [clearDialogOpen, setClearDialogOpen] = useState(false);
     const [orderPlaced, setOrderPlaced] = useState(false);
+    const [dataObj, setDataObj] = useState(dataToObject(data));
 
     // Holds the items in cart and the amounts of each item
     const cartItemKeys = useSelector((state) => state.cart.items)
