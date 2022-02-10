@@ -5,6 +5,7 @@ import RemoveShoppingCartOutlinedIcon from '@mui/icons-material/RemoveShoppingCa
 import GroceryList from '../components/GroceryList';
 import { removeAll } from '../slices/cartSlice'
 import { addOrder } from '../slices/orderHistorySlice'
+import { dataToObject } from '../Utils'
 import data from '../data/data'
 
 
@@ -40,6 +41,8 @@ const ClearCartDialog = (props) => {
 
 // The cart page component
 const CartPage = () => {
+    const dataObj = dataToObject(data);
+
     const [clearDialogOpen, setClearDialogOpen] = useState(false);
     const [orderPlaced, setOrderPlaced] = useState(false);
 
@@ -49,10 +52,10 @@ const CartPage = () => {
     const dispatch = useDispatch();
 
     // Holds all items in cart with key being index and value being every attribute of the item (from data)
-    const itemsInCart = []
+    const itemsInCart = {};
 
     for (const key in cartItemKeys) {
-        itemsInCart[key] = data[key];
+        itemsInCart[key] = dataObj[key];
     }
 
     // Place an order; remove all items from the cart and add the order to order history
@@ -70,6 +73,8 @@ const CartPage = () => {
     }
 
     price = price.toFixed(2);
+
+    console.log(itemsInCart, dataObj[137])
 
     return (
         <React.Fragment>

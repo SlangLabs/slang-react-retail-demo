@@ -5,7 +5,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useDispatch } from 'react-redux'
 import { add } from '../slices/cartSlice'
 import data from '../data/data'
-import { objectFilter, toObject, getGCD } from '../Utils'
+import { objectFilter, dataToObject, getGCD } from '../Utils'
 import appbase, { query } from '../api/appbase'
 
 
@@ -13,7 +13,7 @@ export let searchCallback = () => { };
 
 
 const SearchBar = (props) => {
-    const dataObj = toObject(data);
+    const dataObj = dataToObject(data);
     const dispatch = useDispatch();
 
     const [searchTerm, changeSearchTerm] = useState('');
@@ -153,7 +153,7 @@ const SearchBar = (props) => {
             changeSearchTerm(termToDisplay);
             await props.makeSearch(newTerm);
 
-            dispatch(add({id: itemToAdd.id - 1, amount: (size / sizeGCD)}));
+            dispatch(add({id: itemToAdd.id, amount: (size / sizeGCD)}));
 
             searchUserJourney.setSuccess();
             return searchUserJourney.AppStates.ADD_TO_CART;

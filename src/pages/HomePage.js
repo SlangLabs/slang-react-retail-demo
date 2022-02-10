@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import SearchBar from '../components/SearchBar'
 import GroceryList from '../components/GroceryList'
 import data from '../data/data'
-import { objectFilter, toObject } from '../Utils'
+import { objectFilter, dataToObject } from '../Utils'
 import { slangCallbacks } from '../App'
 import { query } from '../api/appbase'
 import { HotTubSharp } from '@mui/icons-material';
@@ -12,7 +12,7 @@ import { HotTubSharp } from '@mui/icons-material';
 
 // The home page component
 const HomePage = () => {
-    const dataObj = toObject(data);
+    const dataObj = dataToObject(data);
 
     // Convert the array into a object where the key is the index of the object
     const [groceries, setGroceries] = useState(dataObj);
@@ -31,7 +31,7 @@ const HomePage = () => {
         const items = {}
 
         for (const hit of hits) {
-            items[hit._source.id - 1] = hit._source;
+            items[hit._source.id] = hit._source;
         }
 
         setGroceries(items);
