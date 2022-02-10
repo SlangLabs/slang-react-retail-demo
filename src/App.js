@@ -54,14 +54,10 @@ const App = () => {
     const onSearchCallback = (searchInfo, searchUserJourney) => {           
         navigate('/');
 
-        console.log('search', searchInfo, searchUserJourney)
-
         return searchCallback(searchInfo, searchUserJourney);
     }
 
     const onNavigationCallback = (navigationInfo, navigationUserJourney) => {
-        console.log('navi', navigationInfo, navigationUserJourney)
-
         switch (navigationInfo.target) {
             case 'back':
                 navigate(-1);
