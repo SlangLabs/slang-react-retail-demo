@@ -33,6 +33,17 @@ export const cartSlice = createSlice({
                 state.items[id] = 1;
             }
         },
+        add: (state, action) => {
+            // Receives the index of the item and the amount to add
+            const id = action.payload.id;
+            const amount = action.payload.amount;
+
+            if (state.items.hasOwnProperty(id)) {
+                state.items[id] += amount;
+            } else {
+                state.items[id] = amount;
+            }
+        },
         // If there is one of the item, remove it from the cart. Otherwise, decrements the amount
         removeOne: (state, action) => {
             // Receives the index of the item
@@ -64,7 +75,7 @@ const cartMiddleware = (store) => (next) => (action) => {
     return result;
 };
 
-export const { addOne, removeOne, removeAll } = cartSlice.actions
+export const { addOne, add, removeOne, removeAll } = cartSlice.actions
 
 export { cartMiddleware }
 
