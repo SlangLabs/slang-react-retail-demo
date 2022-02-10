@@ -7,6 +7,7 @@ import data from '../data/data'
 import { objectFilter, toObject } from '../Utils'
 import { slangCallbacks } from '../App'
 import { query } from '../api/appbase'
+import { HotTubSharp } from '@mui/icons-material';
 
 
 // The home page component
@@ -19,7 +20,7 @@ const HomePage = () => {
     const [voiceSearchError, setVoiceSearchError] = useState(false);
     const dispatch = useDispatch();
 
-    // On enter press or search button press, change the groceries state item
+    // On enter press or search button press, change the groceries state item. Returns whether there were > items that came up.
     const makeSearch = async (searchTerm) => {
         setSearchToBeMade(true);
 
@@ -33,12 +34,10 @@ const HomePage = () => {
             items[hit._source.id - 1] = hit._source;
         }
 
-        console.log(items)
-
-
-        // const filteredData = objectFilter(dataObj, (item) => (item.name.toLowerCase().includes(fixedSearchTerm)));
         setGroceries(items);
         setSearchToBeMade(false);
+
+        return hits.length !== 0;
     }
 
     // Clear the search term and set the groceries back to all items

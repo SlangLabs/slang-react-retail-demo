@@ -58,3 +58,10 @@ export const formatDate = (date) => {
 export const toObject = (arr) => {
     return arr.reduce((o, item, index) => ({ ...o, [index]: item}), {})
 }
+
+export const getGCD = (num) => {
+    if (num % 5 === 0) return 5;
+    if (num % 2 === 0) return 2;
+    return 1;
+}
+

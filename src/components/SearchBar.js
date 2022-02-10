@@ -3,17 +3,15 @@ import { FormControl, InputLabel, OutlinedInput, InputAdornment, IconButton, Box
 import SearchIcon from '@mui/icons-material/Search';
 import CloseIcon from '@mui/icons-material/Close';
 import data from '../data/data'
-import { objectFilter, toObject } from '../Utils'
+import { objectFilter, toObject, getGCD } from '../Utils'
 import appbase from '../api/appbase'
 
 
 export let searchCallback = () => { };
 
 
-const SearchController = (props) => {
+const normalSearch = (searchInfo) => {
 
-
-    return null;
 }
 
 
@@ -22,55 +20,80 @@ const SearchBar = (props) => {
 
     const [searchTerm, changeSearchTerm] = useState('');
 
-    const searchHasItems = (term) => {
-        const filteredData = objectFilter(dataObj, (item) => (item.name.toLowerCase().includes(term)));
-        return Object.keys(filteredData).length !== 0;
-    }
-
     // Determine if the enter key was pressed
     const checkEnter = (event) => {
         if (event.key === 'Enter') {
             props.makeSearch(searchTerm);
         }
     }
-    
+
     const clearSearch = () => {
         changeSearchTerm('');
         props.clearSearch();
     }
 
-    // searchCallback = (searchInfo, searchUserJourney) => {
-    //     // For now we do not support add to cart
-    //     if (searchInfo.isAddToCart) {
-    //         searchUserJourney.setFailure();
-    //         return searchUserJourney.AppStates.ADD_TO_CART;
-    //     }
+    searchCallback = async (searchInfo, searchUserJourney) => {
+        // For now we do not support add to cart
+        if (searchInfo.isAddToCart) {
+            searchUserJourney.setFailure();
+            return searchUserJourney.AppStates.ADD_TO_CART;
+        }
 
-    //     const newTerm = searchInfo.item.productType
 
-    //     // If the user searches for something like "organic" there are no cases to handle that so throw an error to the user
-    //     if (newTerm === null) {
-    //         // return ''
-    //         clearSearch();
-    //         searchUserJourney.setItemNotSpecified();
-    //         return searchUserJourney.AppStates.SEARCH_RESULTS;
-    //     }
+        // If the search request is not an add to cart request, simply query Appbase based on the info given
+        if (!searchInfo.isAddToCart) {
+            let newTerm = ''
+            let termToDisplay = '';
 
-    //     changeSearchTerm(newTerm);
-    //     props.makeSearch(newTerm);
+            if (searchInfo.item.brand !== null) {
+                newTerm += searchInfo.item.brand;
+            }
 
-    //     if (searchHasItems(newTerm)) {
-    //         searchUserJourney.setNeedDisambiguation();
-    //     } else {
-    //         searchUserJourney.setItemNotFound();
-    //     }
-        
-    //     return searchUserJourney.AppStates.ADD_TO_CART;
-    // }
-            
+            if (searchInfo.item.variants !== null) {
+                newTerm += ' ' + searchInfo.item.variants.join(' ');
+            }
+
+            if (searchInfo.item.productType !== null) {
+                newTerm += ' ' + searchInfo.item.productType;
+            }
+
+            termToDisplay = newTerm;
+
+            if (searchInfo.item.size !== null) {
+                if (searchInfo.item.size.unit !== 'KILOGRAM') {
+                    searchUserJourney.setFailure();
+                    return searchUserJourney.AppStates.SEARCH_RESULTS;
+                }
+
+                const size = Math.round(searchInfo.item.size.amount)
+
+                newTerm += ' ' + getGCD(size) + ' kg';
+                termToDisplay += ' ' + size +  ' kg';
+            }
+
+            if (newTerm === null) {
+                // return ''
+                clearSearch();
+                searchUserJourney.setItemNotSpecified();
+                return searchUserJourney.AppStates.SEARCH_RESULTS;
+            }
+
+            changeSearchTerm(termToDisplay);
+
+            console.log(newTerm);
+
+            if (await props.makeSearch(newTerm)) {
+                searchUserJourney.setSuccess();
+            } else {
+                searchUserJourney.setItemNotFound();
+            }
+        }
+
+        return searchUserJourney.AppStates.SEARCH_RESULTS;
+    }
+
     return (
         <Box sx={{ display: 'flex', alignItems: 'center', ...props.sx }}>
-            <SearchController/>
             <FormControl fullWidth>
                 <InputLabel sx={{ fontSize: 20 }} htmlFor="outlined-adornment-amount">Search</InputLabel>
                 <OutlinedInput
