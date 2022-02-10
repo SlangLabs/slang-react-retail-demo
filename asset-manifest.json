@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/static/css/main.befd10b8.css",
-    "main.js": "/static/js/main.678ececa.js",
+    "main.js": "/static/js/main.b0938852.js",
     "static/media/fruits-veggies.jpg": "/static/media/fruits-veggies.7da31243c110ec74f844.jpg",
     "static/media/logo.png": "/static/media/logo.e15034a1acc9cb828739.png",
     "index.html": "/index.html",
     "main.befd10b8.css.map": "/static/css/main.befd10b8.css.map",
-    "main.678ececa.js.map": "/static/js/main.678ececa.js.map"
+    "main.b0938852.js.map": "/static/js/main.b0938852.js.map"
   },
   "entrypoints": [
     "static/css/main.befd10b8.css",
-    "static/js/main.678ececa.js"
+    "static/js/main.b0938852.js"
   ]
 }
