@@ -59,7 +59,6 @@ const SearchBar = (props) => {
                 const size = Math.round(searchInfo.item.size.amount)
 
                 newTerm += ' ' + getGCD(size) + ' kg';
-                termToDisplay += ' ' + size +  ' kg';
             }
 
             if (newTerm === null) {
@@ -109,7 +108,6 @@ const SearchBar = (props) => {
                 sizeGCD = getGCD(size);
 
                 newTerm += ' ' + sizeGCD + ' kg';
-                termToDisplay += ' ' + size +  ' kg';
             } else { // Ask for a size
                 changeSearchTerm(termToDisplay);
                 await props.makeSearch(newTerm);
