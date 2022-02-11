@@ -7,13 +7,14 @@ import { cancelOrder } from '../slices/orderHistorySlice'
 import data from '../data/data';
 import NotFoundPage from './NotFoundPage';
 import fruitsVeggiesImage from '../assets/img/fruits-veggies.jpg'
-import { formatDate } from '../Utils'
+import { formatDate, dataToObject } from '../Utils'
 
+const dataObj = dataToObject(data);
 
 // A grocery item in the order history page (we cannot use the GroceryItem implementation due to various differences)
 const OrderGroceryItem = (props) => {
     // Get information about the current grocery item
-    const item = data[props.itemKey];
+    const item = dataObj[props.itemKey];
 
     return (
         <Card sx={{ display: 'flex' }}>
@@ -30,7 +31,7 @@ const OrderGroceryItem = (props) => {
                             {item.name}
                         </Typography>
                         <Typography sx={{ fontSize: { xs: 12, sm: 17 } }} color="text.secondary" component="div">
-                            ₹{item.price}
+                            ₹{item.price.toFixed(2)}
                         </Typography>
                         <Chip variant="outlined" sx={{ fontSize: { xs: 10, sm: 12 }, marginTop: 0.5 }} label="5kg" size="small" />
                         {'offer' in item

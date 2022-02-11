@@ -4,7 +4,10 @@ import { useSelector } from 'react-redux'
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry"
 import { Link } from "react-router-dom";
 import data from '../data/data';
-import { formatDate } from '../Utils'
+import { formatDate, dataToObject } from '../Utils'
+
+
+const dataObj = dataToObject(data);
 
 
 // A previous order's component
@@ -12,7 +15,7 @@ const OrderHistoryItem = (props) => {
     let price = 0;
 
     for (const itemKey in props.order.items) {
-        price += data[itemKey].price * props.order.items[itemKey];
+        price += dataObj[itemKey].price * props.order.items[itemKey];
     }
 
     price = price.toFixed(2);
