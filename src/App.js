@@ -17,6 +17,7 @@ import CartPage from './pages/CartPage'
 import NotFoundPage from './pages/NotFoundPage'
 import { ScrollToTop } from './Utils'
 import { searchCallback } from './components/SearchBar'
+import { orderCallback } from './pages/OrderHistoryPage'
 
 
 SlangRetailAssistant.init({
@@ -41,14 +42,9 @@ const App = () => {
 
     // To implement
     const onOrderManagementCallback = (orderInfo, orderManagementUserJourney) => {
-        console.log('order', orderInfo, orderManagementUserJourney)
-
         navigate('/order-history');
 
-        console.log('not implemented yet!')
-
-        orderManagementUserJourney.setViewSuccess();
-        return orderManagementUserJourney.AppStates.VIEW_ORDER;
+        return orderCallback(orderInfo, orderManagementUserJourney);
     }
 
     const onSearchCallback = (searchInfo, searchUserJourney) => {           

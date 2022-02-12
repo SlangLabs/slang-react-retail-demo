@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Box, Card, CardActionArea, CardContent, Typography, Chip } from '@mui/material';
 import { useSelector } from 'react-redux'
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry"
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import data from '../data/data';
 import { formatDate, dataToObject } from '../Utils'
 
 
 const dataObj = dataToObject(data);
+
+export let orderCallback = () => { }
 
 
 // A previous order's component
@@ -56,13 +58,62 @@ const OrderHistoryItem = (props) => {
 const OrderHistoryPage = () => {
     // Get all of the orders from Redux
     const orders = useSelector((state) => state.orderHistory.orders);
+    const navigate = useNavigate();
 
     // Show the most recent orders first
     const sortedOrdersKeys = Object.keys(orders);
     sortedOrdersKeys.sort((a, b) => { return orders[b].date - orders[a].date });
 
+    console.log(sortedOrdersKeys);
+
     // The user has requested an order management action
     // To do
+    useEffect(() => {
+        orderCallback = async (orderInfo, orderUserJourney) => {
+            const isCancel = orderInfo.orderAction === 'CANCEL';
+
+            const returnState = isCancel ? orderUserJourney.AppStates.CANCEL_ORDER : orderUserJourney.AppStates.VIEW_ORDER;
+
+            console.log('orders', orderInfo, orderUserJourney);
+
+            if (sortedOrdersKeys.length === 0) {
+                orderUserJourney.setOrdersEmpty();
+                return returnState;
+            }
+
+            // Make all indices positive and reverse it (first order should be the last element in sortedOrdersKeys)
+            let idx = null;
+
+            if (orderInfo.orderIndex !== null) {
+                idx = orderInfo.orderIndex >= 0 ? sortedOrdersKeys.length - orderInfo.orderIndex : Math.abs(orderInfo.orderIndex) - 1;
+            }
+
+            if ((idx === null) && !isCancel) {
+                orderUserJourney.setViewSuccess();
+                return returnState;
+            }
+
+            if ((idx === null) && isCancel) {
+                orderUserJourney.setOrderIndexRequired();
+                return returnState;
+            }
+
+            if (idx < 0 || idx >= sortedOrdersKeys.length) {
+                orderUserJourney.setOrderNotFound();
+                return returnState;
+            }
+
+            if (!isCancel) {
+                navigate(`/order/${sortedOrdersKeys[idx]}`);
+                orderUserJourney.setViewSuccess();
+                return returnState;
+            }
+
+            orderUserJourney.setConfirmationRequired();
+            return orderUserJourney.AppStates.CANCEL_ORDER
+        }
+    }, [])
+
 
     return (
         <Box sx={{ marginTop: 2, marginBottom: 2 }}>
