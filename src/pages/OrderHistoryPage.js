@@ -3,7 +3,9 @@ import { Box, Card, CardActionArea, CardContent, Typography, Chip } from '@mui/m
 import { useSelector } from 'react-redux'
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry"
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from 'react-redux'
 import data from '../data/data';
+import { cancelOrder } from '../slices/orderHistorySlice'
 import { formatDate, dataToObject } from '../Utils'
 
 
@@ -59,6 +61,8 @@ const OrderHistoryPage = () => {
     // Get all of the orders from Redux
     const orders = useSelector((state) => state.orderHistory.orders);
     const navigate = useNavigate();
+    const [toNavigate, changeToNavigate] = useState(false);
+    const dispatch = useDispatch();
 
     // Show the most recent orders first
     const sortedOrdersKeys = Object.keys(orders);
@@ -66,53 +70,61 @@ const OrderHistoryPage = () => {
 
     console.log(sortedOrdersKeys);
 
+    useEffect(() => {
+        if (toNavigate !== false) {
+            navigate(toNavigate);
+            changeToNavigate(false);
+        }
+    }, [toNavigate])
+    
+
     // The user has requested an order management action
     // To do
-    useEffect(() => {
-        orderCallback = async (orderInfo, orderUserJourney) => {
-            const isCancel = orderInfo.orderAction === 'CANCEL';
+    orderCallback = async (orderInfo, orderUserJourney) => {
+        const isCancel = orderInfo.orderAction === 'CANCEL';
 
-            const returnState = isCancel ? orderUserJourney.AppStates.CANCEL_ORDER : orderUserJourney.AppStates.VIEW_ORDER;
+        const returnState = isCancel ? orderUserJourney.AppStates.CANCEL_ORDER : orderUserJourney.AppStates.VIEW_ORDER;
 
-            console.log('orders', orderInfo, orderUserJourney);
+        console.log('orders', orderInfo, orderUserJourney);
 
-            if (sortedOrdersKeys.length === 0) {
-                orderUserJourney.setOrdersEmpty();
-                return returnState;
-            }
-
-            // Make all indices positive and reverse it (first order should be the last element in sortedOrdersKeys)
-            let idx = null;
-
-            if (orderInfo.orderIndex !== null) {
-                idx = orderInfo.orderIndex >= 0 ? sortedOrdersKeys.length - orderInfo.orderIndex : Math.abs(orderInfo.orderIndex) - 1;
-            }
-
-            if ((idx === null) && !isCancel) {
-                orderUserJourney.setViewSuccess();
-                return returnState;
-            }
-
-            if ((idx === null) && isCancel) {
-                orderUserJourney.setOrderIndexRequired();
-                return returnState;
-            }
-
-            if (idx < 0 || idx >= sortedOrdersKeys.length) {
-                orderUserJourney.setOrderNotFound();
-                return returnState;
-            }
-
-            if (!isCancel) {
-                navigate(`/order/${sortedOrdersKeys[idx]}`);
-                orderUserJourney.setViewSuccess();
-                return returnState;
-            }
-
-            orderUserJourney.setConfirmationRequired();
-            return orderUserJourney.AppStates.CANCEL_ORDER
+        if (sortedOrdersKeys.length === 0) {
+            orderUserJourney.setOrdersEmpty();
+            return returnState;
         }
-    }, [])
+
+        // Make all indices positive and reverse it (first order should be the last element in sortedOrdersKeys)
+        let idx = null;
+
+        if (orderInfo.orderIndex !== null) {
+            idx = orderInfo.orderIndex >= 0 ? sortedOrdersKeys.length - orderInfo.orderIndex : Math.abs(orderInfo.orderIndex) - 1;
+        }
+
+        if ((idx === null) && !isCancel) {
+            orderUserJourney.setViewSuccess();
+            return returnState;
+        }
+
+        if ((idx === null) && isCancel) {
+            orderUserJourney.setOrderIndexRequired();
+            return returnState;
+        }
+
+        if (idx < 0 || idx >= sortedOrdersKeys.length) {
+            orderUserJourney.setOrderNotFound();
+            return returnState;
+        }
+
+        if (!isCancel) {
+            changeToNavigate(`/order/${sortedOrdersKeys[idx]}`);
+            orderUserJourney.setViewSuccess();
+            return returnState;
+        }
+
+        dispatch(cancelOrder(sortedOrdersKeys[idx]));
+
+        orderUserJourney.setViewSuccess();
+        return orderUserJourney.AppStates.CANCEL_ORDER
+    }
 
 
     return (

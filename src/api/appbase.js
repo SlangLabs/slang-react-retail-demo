@@ -1,26 +1,28 @@
 import axios from 'axios';
 
 const headers = {};
-headers['Authorization'] = 'Basic ' + btoa('f0d086393945:c457169d-7560-4124-9b39-d8ee07894e6e');
+headers['Authorization'] = 'Basic ' + btoa('c01a01a09fbe:cdf60413-bc1d-4edc-b578-434fff1e2002');
 headers['Content-Type'] = 'application/json';
 
 const appbase = axios.create({
-    baseURL: 'https://slang-react-demo-hqtxxeb-arc.searchbase.io/slang-react',
+    baseURL: 'https://vamo-ajeayre-arc.searchbase.io/list',
     headers: headers
 })
 
 export const query = async (term) => {
      const data = await appbase.post('/_reactivesearch.v3', JSON.stringify(
         {
-            "query": [
+            query: [
                 {
-                    "id": "search",
-                    "value": term,
-                    "size": 10000,
+                    id: "search",
+                    value: term,
+                    size: 1053,
+                    dataField: ['brand', 'name', 'size', 'unit']
                 }
             ]
         })
     )
+
 
     return data.data;
 }
