@@ -10,19 +10,19 @@ const appbase = axios.create({
 })
 
 export const query = async (term) => {
-     const data = await appbase.post('/_reactivesearch.v3', JSON.stringify(
+    const data = await appbase.post('/_reactivesearch.v3', JSON.stringify(
         {
             query: [
                 {
                     id: "search",
                     value: term,
                     size: 1053,
-                    dataField: ['brand', 'name', 'size', 'unit']
+                    dataField: ['*'],
+                    queryFormat: "and"
                 }
             ]
         })
     )
-
 
     return data.data;
 }
