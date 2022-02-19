@@ -9,6 +9,10 @@ import { addOne, removeOne } from '../slices/cartSlice'
 import NotFoundPage from './NotFoundPage'
 import data from '../data/data'
 import fruitsVeggiesImage from '../assets/img/fruits-veggies.jpg'
+import { dataToObject } from '../Utils';
+
+
+const dataObj = dataToObject(data);
 
 
 // The page for a specific item
@@ -19,7 +23,7 @@ const ItemPage = () => {
     let itemKey = params.itemKey;
 
     // Determine if the item key (provided in the params) is invalid
-    const isInvalid = !data.hasOwnProperty(itemKey);
+    const isInvalid = !dataObj.hasOwnProperty(itemKey);
 
     // We are forced to do this since hooks cannot be called conditionally
     const amount = useSelector((state) => {
@@ -35,7 +39,7 @@ const ItemPage = () => {
     }
 
     // Get the item's attributes
-    const item = data[itemKey];
+    const item = dataObj[itemKey];
 
     return (
         <Grid sx={{ marginTop: 1, marginBottom: 2 }} container spacing={2}>
