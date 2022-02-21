@@ -120,10 +120,11 @@ const OrderHistoryPage = () => {
             return returnState;
         }
 
-        dispatch(cancelOrder(sortedOrdersKeys[idx]));
-
-        orderUserJourney.setViewSuccess();
-        return orderUserJourney.AppStates.CANCEL_ORDER
+        if (isCancel) {
+            dispatch(cancelOrder(sortedOrdersKeys[idx]));
+            orderUserJourney.setUserConfirmedCancel();
+            return returnState;
+        }
     }
 
 
