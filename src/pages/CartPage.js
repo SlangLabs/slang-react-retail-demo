@@ -7,6 +7,7 @@ import { removeAll } from '../slices/cartSlice'
 import { addOrder } from '../slices/orderHistorySlice'
 import { dataToObject } from '../Utils'
 import data from '../data/data'
+import SlangRetailAssistant from '@slanglabs/slang-retail-assistant'
 
 
 // The dialog that asks the user to confirm whether they want to clear their cart
@@ -17,6 +18,8 @@ const ClearCartDialog = (props) => {
     const clearCart = () => {
         dispatch(removeAll());
         props.onClose();
+        // console.log(SlangRetailAssistant.AssistantUserJourneys.GLOBAL);
+        // SlangRetailAssistant.startConversation(SlangRetailAssistant.AssistantUserJourneys.GLOBAL);
     }
 
     return (
@@ -73,8 +76,6 @@ const CartPage = () => {
 
     price = price.toFixed(2);
 
-    console.log(itemsInCart, dataObj[137])
-
     return (
         <React.Fragment>
             {/* The notification that lets the user know that their order has been placed */}
@@ -108,7 +109,7 @@ const CartPage = () => {
             <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
                 <Toolbar>
                     <Typography variant="h6">Total: ₹{price}</Typography>
-                    <Box sx={{ flexGrow: 1 }} />
+                    <Box sx={{ marginLeft: 2}} />
                     {Object.keys(itemsInCart).length > 0
                         ? <Button onClick={placeOrder} color="success" variant="contained">Place Order</Button>
                         : null

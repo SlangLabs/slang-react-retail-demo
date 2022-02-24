@@ -26,6 +26,7 @@ SlangRetailAssistant.init({
     apiKey: '7cbb0751404d494ab84dc7c1a7828e3c',
 })
 
+// SlangRetailAssistant.ui.setTriggerPosition("TOP_RIGHT");
 
 SlangRetailAssistant.ui.show();
 
@@ -39,6 +40,11 @@ const App = () => {
     const theme = createTheme(palette(themeVal));
     const navigate = useNavigate();
     const dispatch = useDispatch();
+
+    console.log(SlangRetailAssistant.ui);
+
+    console.log(SlangRetailAssistant);
+
 
     // To implement
     const onOrderManagementCallback = (orderInfo, orderManagementUserJourney) => {
@@ -85,7 +91,7 @@ const App = () => {
         onOrderManagement: onOrderManagementCallback,
         onNavigation: onNavigationCallback
     })
-    
+
 
     return (
         <React.StrictMode>
