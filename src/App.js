@@ -20,33 +20,42 @@ import { searchCallback } from './components/SearchBar'
 import { orderCallback } from './pages/OrderHistoryPage'
 
 
-SlangRetailAssistant.init({
-    requestedLocales: ['en-IN'],
-    assistantID: '815199d4e21c40489370d691f6d6c364',
-    apiKey: '7cbb0751404d494ab84dc7c1a7828e3c',
-})
-
-// SlangRetailAssistant.ui.setTriggerPosition("TOP_RIGHT");
-
-SlangRetailAssistant.ui.show();
-
-
 export const slangCallbacks = { };
 
 
 const App = () => {
     // Get the theme value from Redux and create the theme
-    const themeVal = useSelector((state) => state.theme.value)
+    const themeVal = useSelector((state) => state.theme.value);
     const theme = createTheme(palette(themeVal));
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const [initialized, setInitialized] = useState(false);
+
+    if (!initialized) {
+        SlangRetailAssistant.init({
+            requestedLocales: ['en-IN'],
+            assistantID: '815199d4e21c40489370d691f6d6c364',
+            apiKey: '7cbb0751404d494ab84dc7c1a7828e3c',
+        }).then(() => {
+            setInitialized(true);
+        })
+
+        SlangRetailAssistant.ui.show();
+    }
+
+
+    useEffect(() => {
+        if (initialized) {
+            SlangRetailAssistant.ui.setUITheme(themeVal);
+        }
+    }, [themeVal, initialized])
+
 
     console.log(SlangRetailAssistant.ui);
 
     console.log(SlangRetailAssistant);
 
 
-    // To implement
     const onOrderManagementCallback = (orderInfo, orderManagementUserJourney) => {
         navigate('/order-history');
 

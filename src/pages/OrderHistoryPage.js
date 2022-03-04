@@ -70,6 +70,7 @@ const OrderHistoryPage = () => {
 
     console.log(sortedOrdersKeys);
 
+    // If the user wants to navigate away from the current page, it must be done in a useEffect
     useEffect(() => {
         if (toNavigate !== false) {
             navigate(toNavigate);
@@ -79,7 +80,6 @@ const OrderHistoryPage = () => {
     
 
     // The user has requested an order management action
-    // To do
     orderCallback = async (orderInfo, orderUserJourney) => {
         const isCancel = orderInfo.orderAction === 'CANCEL';
 
@@ -101,30 +101,24 @@ const OrderHistoryPage = () => {
 
         if ((idx === null) && !isCancel) {
             orderUserJourney.setViewSuccess();
-            return returnState;
-        }
-
-        if ((idx === null) && isCancel) {
+        } else if ((idx === null) && isCancel) {
             orderUserJourney.setOrderIndexRequired();
-            return returnState;
-        }
-
-        if (idx < 0 || idx >= sortedOrdersKeys.length) {
+        } else if (idx < 0 || idx >= sortedOrdersKeys.length) {
             orderUserJourney.setOrderNotFound();
-            return returnState;
-        }
-
-        if (!isCancel) {
+        } else if (!isCancel) {
             changeToNavigate(`/order/${sortedOrdersKeys[idx]}`);
             orderUserJourney.setViewSuccess();
-            return returnState;
-        }
-
-        if (isCancel) {
+        } else if (isCancel && orderInfo.confirmationStatus === 'UNKNOWN') {
+            orderUserJourney.setConfirmationRequired();
+        } else if (isCancel && orderInfo.confirmationStatus === 'CONFIRMED') {
             dispatch(cancelOrder(sortedOrdersKeys[idx]));
             orderUserJourney.setUserConfirmedCancel();
-            return returnState;
+        } else if (isCancel && orderInfo.confirmationStatus === 'DENIED') {
+            orderUserJourney.setUserDeniedCancel();
         }
+
+        return returnState;
+
     }
 
 
